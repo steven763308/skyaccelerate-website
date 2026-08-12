@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"home:%{http_code}\\\\n\" http://localhost:3001/)",
+      "Bash(curl -s -o /dev/null -w \"about:%{http_code}\\\\n\" http://localhost:3001/about)",
+      "Bash(curl -s -o /dev/null -w \"services:%{http_code}\\\\n\" http://localhost:3001/services)",
+      "Bash(curl -s -o /dev/null -w \"cidb:%{http_code}\\\\n\" http://localhost:3001/cidb-advisory)",
+      "Bash(curl -s -o /dev/null -w \"case:%{http_code}\\\\n\" http://localhost:3001/case-reviews)",
+      "Bash(tail -n 100 /tmp/dev.log)",
+      "Read(//tmp/**)",
+      "Bash(pkill -f \"next dev\")",
+      "PowerShell($conn = Get-NetTCPConnection -LocalPort 3001 -ErrorAction SilentlyContinue; if \\($conn\\) { $procId = $conn[0].OwningProcess; Stop-Process -Id $procId -Force; \"Stopped PID $procId\" } else { \"No process on 3001\" })",
+      "Bash(npx --yes playwright --version)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/)"
+    ]
+  }
+}
