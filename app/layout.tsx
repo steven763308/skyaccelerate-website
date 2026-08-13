@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Newsreader, Work_Sans } from "next/font/google";
+import { Newsreader, Work_Sans, Oswald } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -18,6 +18,13 @@ const sans = Work_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+const display = Oswald({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -65,7 +72,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${serif.variable} ${sans.variable}`}>
+    <html lang="en" className={`${serif.variable} ${sans.variable} ${display.variable}`}>
       <body className="font-sans">
         <Header />
         <main>{children}</main>

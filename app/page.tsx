@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SectionHeading, Eyebrow, Chevron } from "@/components/Bits";
-import { HeroIn, ParallaxWatermark, Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { HomeHero } from "@/components/HomeHero";
 import {
   processSteps,
   differentiators,
@@ -13,43 +14,8 @@ import {
 export default function HomePage() {
   return (
     <>
-      {/* SECTION 1 — HERO */}
-      <section className="relative bg-navy-800 text-paper overflow-hidden">
-        <ParallaxWatermark className="pointer-events-none absolute -right-32 -top-32 h-[520px] w-[520px] bg-paper/[0.035] mark-chevron" />
-        <div className="container-content relative pt-28 pb-24 md:pt-36 md:pb-32">
-          <HeroIn>
-            <Eyebrow light>{company.registrationNo} · Selangor, Malaysia</Eyebrow>
-          </HeroIn>
-          <HeroIn delay={0.08}>
-            <h1 className="text-[2.6rem] leading-[1.1] md:text-6xl md:leading-[1.08] max-w-3xl mt-7">
-              Integrated Compliance
-              <br />&amp; Strategic Advisory
-            </h1>
-          </HeroIn>
-          <HeroIn delay={0.16}>
-            <p className="mt-6 text-lg text-steel max-w-xl">
-              For the construction and related industries.
-            </p>
-          </HeroIn>
-          <HeroIn delay={0.24}>
-            <p className="mt-6 text-steel/90 max-w-2xl leading-relaxed">
-              Sky Accelerate Group helps businesses navigate regulatory
-              requirements through structured, practical and responsible
-              advisory solutions.
-            </p>
-          </HeroIn>
-          <HeroIn delay={0.32}>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link href="/contact" className="btn-primary bg-paper text-ink hover:bg-steel/40">
-                Request a Consultation
-              </Link>
-              <Link href="/services" className="btn-outline-light">
-                Explore Our Services
-              </Link>
-            </div>
-          </HeroIn>
-        </div>
-      </section>
+      {/* SECTION 1 — HERO / COVER BANNER */}
+      <HomeHero />
 
       {/* SECTION 2 — INTRODUCTION */}
       <section className="section-pad">

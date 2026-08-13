@@ -33,6 +33,7 @@ const config: Config = {
       fontFamily: {
         serif: ["var(--font-serif)", "Georgia", "serif"],
         sans: ["var(--font-sans)", "Helvetica", "Arial", "sans-serif"],
+        display: ["var(--font-display)", "Arial Narrow", "sans-serif"],
       },
       maxWidth: {
         content: "1280px",
