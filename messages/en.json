@@ -1,0 +1,471 @@
+{
+  "meta": {
+    "defaultTitle": "Sky Accelerate Group | Compliance & Strategic Advisory, Malaysia",
+    "defaultDescription": "Sky Accelerate Group is an independent Malaysian compliance and strategic advisory group serving the construction and related business industries, with a primary focus on CIDB compliance and registration advisory."
+  },
+  "common": {
+    "requestConsultation": "Request a Consultation",
+    "exploreServices": "Explore Our Services",
+    "whatsappOurTeam": "WhatsApp Our Team",
+    "whatsappUs": "WhatsApp Us",
+    "viewAll": "View All",
+    "discussThisService": "Discuss This Service",
+    "resultsVary": "Results vary according to circumstances and applicable regulatory requirements.",
+    "languageSwitcherLabel": "Language",
+    "legal": "Legal",
+    "lastUpdated": "Last updated:"
+  },
+  "header": {
+    "toggleMenu": "Toggle navigation menu"
+  },
+  "footer": {
+    "companyHeading": "Company",
+    "contactHeading": "Contact",
+    "disclaimer": "{legalName} is an independent advisory company and is not a government authority. References to CIDB, MOF, JKKP, SPAN, SSM or any other authority are made in relation to their respective regulatory functions only and do not imply affiliation, appointment or partnership. Regulatory approvals remain subject to the relevant authorities and applicable requirements.",
+    "rightsReserved": "All Rights Reserved."
+  },
+  "homeHero": {
+    "eyebrow": "Compliance & Strategic Advisory",
+    "titleLine1": "Integrated Compliance",
+    "titleLine2": "& Strategic Advisory",
+    "forPrefix": "For the",
+    "industries": "Construction and Related Industries",
+    "description": "Sky Accelerate Group helps businesses navigate regulatory requirements through structured, practical and responsible advisory solutions."
+  },
+  "HomePage": {
+    "intro": {
+      "eyebrow": "About Our Approach",
+      "title": "Navigating Compliance with Clarity",
+      "body": "Businesses operating in regulated industries often face changing requirements, layered documentation obligations and multiple authorities to satisfy at once. Sky Accelerate Group works alongside our clients as an advisory partner — helping them understand what applies to their business, what is required, and how to move through the process with structure and confidence."
+    },
+    "coreExpertise": {
+      "eyebrow": "Core Expertise",
+      "title": "Where We Focus",
+      "note": "Our primary area of expertise remains CIDB compliance and registration advisory.",
+      "link": "Explore CIDB Advisory",
+      "items": [
+        {
+          "title": "Contractor Compliance",
+          "body": "CIDB contractor registration, renewal, upgrading and related advisory."
+        },
+        {
+          "title": "Personnel Compliance",
+          "body": "CIDB personnel registration and related compliance support."
+        },
+        {
+          "title": "Regulatory Advisory",
+          "body": "Selected regulatory, documentation and business support advisory."
+        }
+      ]
+    },
+    "process": {
+      "eyebrow": "Our Process",
+      "title": "Our Approach",
+      "subtitle": "A structured process from first conversation to follow-up — not a promise of outcome, but a commitment to how we work."
+    },
+    "why": {
+      "eyebrow": "Differentiation",
+      "title": "Why Sky Accelerate"
+    },
+    "history": {
+      "eyebrow": "Our History",
+      "title": "Built on Experience. Structured for Growth."
+    },
+    "caseReviews": {
+      "eyebrow": "Case Reviews",
+      "title": "Selected Case Reviews"
+    },
+    "insights": {
+      "eyebrow": "Knowledge Centre",
+      "title": "Insights"
+    },
+    "finalCta": {
+      "title": "Need Clarity on a Compliance Requirement?",
+      "body": "Speak with our advisory team to understand the requirements, documentation and appropriate next steps for your business."
+    }
+  },
+  "AboutPage": {
+    "hero": {
+      "eyebrow": "About Sky Accelerate Group",
+      "title": "Structured Advisory. Responsible Growth.",
+      "subtitle": "An independent Malaysian advisory group built on structured process and long-term client relationships."
+    },
+    "whoWeAre": {
+      "eyebrow": "Introduction",
+      "title": "Who We Are",
+      "body1": "{legalName} is a Malaysian advisory group focused on compliance and business support for the construction and related business industries. We work as an independent advisory partner, not as a licensing agent or a representative of any government authority.",
+      "body2": "Our clients come to us because they need more than a submitted form — they need someone who understands the regulatory process, the documentation involved, the risks at stake, and the overall compliance pathway their business needs to follow."
+    },
+    "story": {
+      "eyebrow": "Our Story",
+      "title": "A Structured Evolution",
+      "subtitle": "Sky Accelerate Group's operational roots trace back to 2023. The company itself was incorporated in 2026 as the next stage of that development."
+    },
+    "vision": {
+      "eyebrow": "Vision",
+      "title": "Our Vision",
+      "body": "To become a trusted and reliable one-stop compliance advisory group for the construction, industry and related businesses."
+    },
+    "mission": {
+      "eyebrow": "Mission",
+      "title": "Our Mission",
+      "intro": "We support businesses through comprehensive compliance advisory involving:",
+      "items": [
+        "Regulatory and construction-related licensing support",
+        "Manpower and labour compliance advisory",
+        "Business and financial support advisory through trusted partners"
+      ]
+    },
+    "values": {
+      "eyebrow": "What Guides Us",
+      "title": "Our Values"
+    },
+    "philosophy": {
+      "eyebrow": "Our Philosophy",
+      "quote": "“Compliance should not be treated simply as paperwork. It is part of responsible business operations and long-term risk management.”",
+      "body": "We see every registration, renewal or submission as one part of a larger picture — how a business protects itself, plans ahead, and continues to operate with confidence within a regulated industry. That is the lens we bring to every engagement."
+    }
+  },
+  "ServicesPage": {
+    "hero": {
+      "eyebrow": "What We Do",
+      "title": "Services",
+      "subtitle": "A clear distinction between what Sky Accelerate Group advises and delivers in-house, and what is coordinated through trusted professional partners."
+    },
+    "inHouse": {
+      "eyebrow": "In-House",
+      "title": "In-House Advisory",
+      "subtitle": "Services advised on and delivered directly by Sky Accelerate Group, led by our core CIDB compliance expertise."
+    },
+    "partner": {
+      "eyebrow": "Partner-Supported",
+      "title": "Partner-Supported Services",
+      "subtitle": "Extended regulatory support coordinated through trusted professional partners where appropriate. These are not performed directly in-house."
+    },
+    "cta": {
+      "title": "Not Sure Which Service Applies?"
+    }
+  },
+  "CidbAdvisoryPage": {
+    "hero": {
+      "eyebrow": "Our Primary Area of Expertise",
+      "title": "CIDB Compliance & Registration Advisory",
+      "subtitle": "Structured guidance for Malaysian contractors navigating registration, renewal, upgrading and related compliance requirements."
+    },
+    "contractor": {
+      "eyebrow": "Contractors",
+      "title": "Contractor Registration & Compliance Advisory",
+      "subtitle": "We help clients understand eligibility, documentation, registration requirements and the overall application pathway — rather than simply lodging a form on their behalf.",
+      "items": [
+        {
+          "title": "New Registration",
+          "body": "Advisory on eligibility, applicable category and grade, and the documentation required to prepare a structured submission."
+        },
+        {
+          "title": "Renewal",
+          "body": "Review of renewal timelines and updated documentation requirements to support a timely, well-organised submission."
+        },
+        {
+          "title": "Grade Upgrade",
+          "body": "Assessment of financial, technical and personnel criteria relevant to the desired grade band, with guidance on closing documentation gaps."
+        },
+        {
+          "title": "Related Applications",
+          "body": "Advisory support on other contractor-related applications and submissions as they arise."
+        }
+      ]
+    },
+    "personnel": {
+      "eyebrow": "Personnel",
+      "title": "CIDB Personnel Registration",
+      "subtitle": "Positioned as part of a company's broader workforce and personnel compliance, not a standalone paperwork exercise.",
+      "items": [
+        {
+          "title": "New Registration",
+          "body": "Guidance on personnel registration requirements as part of overall workforce compliance."
+        },
+        {
+          "title": "Renewal",
+          "body": "Support in tracking renewal timelines and preparing the relevant documentation."
+        },
+        {
+          "title": "Related Applications",
+          "body": "Advisory on other personnel-related registration matters as required."
+        }
+      ]
+    },
+    "products": {
+      "eyebrow": "Products & Materials",
+      "title": "Product & Material Compliance",
+      "subtitle": "Currently available as regulatory consultation and compliance guidance.",
+      "consultationTitle": "Regulatory Consultation",
+      "consultationBody": "Advisory on the regulatory considerations relevant to product and material compliance within the construction sector.",
+      "guidanceTitle": "Compliance Guidance",
+      "guidanceBody": "General guidance to help clients understand applicable compliance expectations for products and materials.",
+      "note": "Application handling for CIDB product and material compliance is currently not available. Our role in this area is limited to regulatory consultation and compliance guidance."
+    },
+    "process": {
+      "eyebrow": "How We Work",
+      "title": "Our Process"
+    },
+    "documents": {
+      "eyebrow": "Preparation",
+      "title": "Information Commonly Required",
+      "items": [
+        "Company registration and shareholding information",
+        "Financial statements and supporting financial records",
+        "Technical personnel and project experience details",
+        "Prior registration or licensing history, where applicable"
+      ],
+      "note": "Requirements may vary depending on company circumstances and prevailing regulatory requirements. We confirm the exact documentation needed during our initial assessment."
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "q": "Does Sky Accelerate Group guarantee approval of a CIDB application?",
+          "a": "No. Approvals remain at the sole discretion of CIDB and are subject to the applicable requirements at the time of submission. We provide structured advisory and preparation support — we do not represent CIDB and cannot guarantee outcomes or processing timelines."
+        },
+        {
+          "q": "Is Sky Accelerate Group affiliated with CIDB?",
+          "a": "No. Sky Accelerate Group is an independent advisory company and is not a government authority or an official representative of CIDB."
+        },
+        {
+          "q": "What documents are typically required?",
+          "a": "This varies depending on the type of application and the company's current standing. Requirements may vary depending on company circumstances and prevailing regulatory requirements — we review this individually with each client."
+        },
+        {
+          "q": "Can Sky Accelerate Group handle CIDB product and material compliance applications?",
+          "a": "Not at this time. We currently provide regulatory consultation and compliance guidance for product and material compliance matters, but application handling for this category is not yet available."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Discuss Your Contractor Registration Requirements"
+    }
+  },
+  "CaseReviewsPage": {
+    "hero": {
+      "eyebrow": "Selected Case Reviews",
+      "title": "How We Work, In Practice",
+      "subtitle": "Anonymised reviews of representative engagements, structured around the situation, the regulatory requirement, our role, and the outcome."
+    },
+    "confidentialityNote": "Case details below are anonymised to protect client confidentiality. Identifying information, registration numbers and confidential documents have been removed or generalised. Results vary according to circumstances and applicable regulatory requirements — these reviews describe our advisory approach, not guaranteed outcomes.",
+    "labels": {
+      "situation": "Situation",
+      "requirement": "Regulatory Requirement",
+      "role": "Our Role",
+      "outcome": "Outcome"
+    },
+    "importantNote": "Important note: results vary according to circumstances and applicable regulatory requirements.",
+    "showcase": {
+      "eyebrow": "Verified Registration",
+      "title": "CIDB PPK Registration Certificate",
+      "body": "An actual CIDB PPK (Perakuan Pendaftaran Kontraktor) registration certificate from one of our client engagements, shown here with identifying details redacted to protect client confidentiality.",
+      "caption": "CIDB PPK Registration Certificate — identifying details redacted for client confidentiality."
+    },
+    "cta": {
+      "title": "Discuss a Situation Similar to Yours"
+    }
+  },
+  "InsightsPage": {
+    "hero": {
+      "eyebrow": "Knowledge Centre",
+      "title": "Insights",
+      "subtitle": "Practical, plain-language guidance on CIDB compliance and related regulatory topics for contractors and businesses in the construction industry."
+    },
+    "developingNote": "This section is being developed as part of our ongoing knowledge centre. Articles marked below are in draft and pending verification before publication — we do not publish regulatory guidance until it has been checked for accuracy.",
+    "upcoming": {
+      "eyebrow": "Coming Soon",
+      "title": "Upcoming Topics"
+    }
+  },
+  "ContactPage": {
+    "hero": {
+      "eyebrow": "Get in Touch",
+      "title": "Start a Conversation",
+      "subtitle": "Tell us briefly about your business and requirements, and our advisory team will follow up to discuss the appropriate next steps."
+    },
+    "office": "Office",
+    "email": "Email",
+    "phoneWhatsapp": "Phone / WhatsApp",
+    "registrationNo": "Registration No."
+  },
+  "ContactForm": {
+    "fullName": "Full Name",
+    "companyName": "Company Name",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "serviceRequired": "Service Required",
+    "selectService": "Select a service",
+    "message": "Message",
+    "messagePlaceholder": "Tell us briefly about your requirements.",
+    "consent": "By submitting this form, you consent to {legalName} collecting and processing the personal data provided above for the purpose of responding to your enquiry, in accordance with our Privacy Policy.",
+    "submit": "Submit Enquiry",
+    "submitting": "Sending…",
+    "thankYouTitle": "Thank You",
+    "thankYouBody": "Your enquiry has been received. Our advisory team will get back to you shortly.",
+    "genericError": "Something went wrong. Please try again."
+  },
+  "PrivacyPolicyPage": {
+    "title": "Privacy Policy",
+    "updated": "January 2026",
+    "intro": "{legalName} ({registrationNo}) (“Sky Accelerate Group”, “we”, “us” or “our”) respects the privacy of individuals who interact with us, including visitors to our website and clients who engage our advisory services. This Privacy Policy explains how we collect, use, disclose and protect personal data in connection with our services and this website.",
+    "sections": [
+      {
+        "num": "PP/01",
+        "title": "Information We Collect",
+        "paragraphs": [
+          "We may collect personal data that you voluntarily provide to us, including your name, company name, phone number, email address, the service you are enquiring about, and any message or supporting information you choose to share through our contact form, email, phone or WhatsApp.",
+          "Where you engage us for advisory services, we may also collect business, financial and documentation-related information necessary to provide the relevant compliance advisory."
+        ]
+      },
+      {
+        "num": "PP/02",
+        "title": "How We Use Your Information",
+        "intro": "We use the personal data we collect to:",
+        "list": [
+          "Respond to enquiries and consultation requests;",
+          "Provide, manage and deliver our advisory services;",
+          "Communicate with you regarding your engagement, including follow-up guidance;",
+          "Comply with applicable legal and regulatory obligations;",
+          "Improve our website and services, where data is used in an aggregated or anonymised form."
+        ]
+      },
+      {
+        "num": "PP/03",
+        "title": "Disclosure to Third Parties",
+        "paragraphs": [
+          "For certain partner-supported services, we may need to share relevant information with trusted professional partners who assist in coordinating the applicable process (for example, corporate registration or construction-related regulatory support). We only share the information reasonably necessary for this purpose.",
+          "We do not sell personal data to third parties for marketing purposes."
+        ]
+      },
+      {
+        "num": "PP/04",
+        "title": "Data Retention",
+        "paragraphs": [
+          "We retain personal data for as long as necessary to fulfil the purposes described in this Policy, or as required by applicable law, after which it is securely disposed of or anonymised."
+        ]
+      },
+      {
+        "num": "PP/05",
+        "title": "Your Rights",
+        "paragraphs": [
+          "Subject to applicable law, you may request access to, correction of, or deletion of your personal data held by us. You may also withdraw consent to our processing of your data, where applicable, by contacting us using the details below."
+        ]
+      },
+      {
+        "num": "PP/06",
+        "title": "Contact Us",
+        "paragraphs": [
+          "For questions regarding this Privacy Policy or how your personal data is handled, please contact us at {email} or {phone}."
+        ]
+      }
+    ]
+  },
+  "TermsOfUsePage": {
+    "title": "Terms of Use",
+    "updated": "January 2026",
+    "intro": "These Terms of Use govern your access to and use of the website operated by {legalName} ({registrationNo}) at {domain} (the “Website”). By accessing or using the Website, you agree to be bound by these Terms.",
+    "sections": [
+      {
+        "num": "TU/01",
+        "title": "Purpose of the Website",
+        "paragraphs": [
+          "This Website is provided to give general information about Sky Accelerate Group and our advisory services. Content on this Website is for informational purposes only and does not constitute legal, financial or regulatory advice."
+        ]
+      },
+      {
+        "num": "TU/02",
+        "title": "No Guarantee of Outcome",
+        "paragraphs": [
+          "Nothing on this Website constitutes a guarantee of approval, licence issuance, registration outcome or processing timeline by any regulatory authority. Regulatory outcomes remain at the sole discretion of the relevant authorities."
+        ]
+      },
+      {
+        "num": "TU/03",
+        "title": "Intellectual Property",
+        "paragraphs": [
+          "All content on this Website, including text, graphics, logos and layout, is the property of {legalName} unless otherwise stated, and may not be reproduced or used without our prior written consent."
+        ]
+      },
+      {
+        "num": "TU/04",
+        "title": "Third-Party Links and References",
+        "paragraphs": [
+          "References to regulatory authorities such as CIDB, MOF, JKKP, SPAN or SSM are made solely in relation to their respective regulatory functions. Such references do not imply affiliation, appointment, endorsement or partnership between Sky Accelerate Group and those authorities."
+        ]
+      },
+      {
+        "num": "TU/05",
+        "title": "Limitation of Liability",
+        "paragraphs": [
+          "To the fullest extent permitted by law, {legalName} shall not be liable for any loss or damage arising from your use of, or reliance on, information provided on this Website. Specific advisory engagements are governed by the separate terms agreed with each client."
+        ]
+      },
+      {
+        "num": "TU/06",
+        "title": "Changes to These Terms",
+        "paragraphs": [
+          "We may update these Terms of Use from time to time. Continued use of the Website after changes are posted constitutes acceptance of the revised Terms."
+        ]
+      },
+      {
+        "num": "TU/07",
+        "title": "Governing Law",
+        "paragraphs": [
+          "These Terms are governed by the laws of Malaysia, without regard to conflict of law principles."
+        ]
+      }
+    ]
+  },
+  "DisclaimerPage": {
+    "title": "Disclaimer",
+    "updated": "January 2026",
+    "sections": [
+      {
+        "num": "DIS/01",
+        "title": "Independent Advisory Status",
+        "paragraphs": [
+          "{legalName} ({registrationNo}) is an independent advisory company. We are not a government authority, department or agency, and we are not an official representative of CIDB, MOF, JKKP, SPAN, SSM or any other Malaysian regulatory authority unless specifically stated and legally authorised."
+        ]
+      },
+      {
+        "num": "DIS/02",
+        "title": "No Guarantee of Outcome",
+        "paragraphs": [
+          "We provide structured, practical and responsible advisory services relating to regulatory compliance. We do not guarantee approval, licence issuance, registration outcome, grade determination or any specific processing timeline. All regulatory outcomes remain subject to the assessment and discretion of the relevant authorities."
+        ]
+      },
+      {
+        "num": "DIS/03",
+        "title": "Partner-Supported Services",
+        "paragraphs": [
+          "Certain services described on this Website — including corporate registration support, JKKP, MOF and SPAN-related support, and other licensing or permit support — are coordinated through trusted professional partners rather than performed directly in-house. Where this applies, it is clearly indicated on the relevant service description."
+        ]
+      },
+      {
+        "num": "DIS/04",
+        "title": "General Information Only",
+        "paragraphs": [
+          "Content on this Website, including our Insights section, is provided for general informational purposes and reflects our understanding at the time of publication. Regulatory requirements may change, and requirements may vary depending on company circumstances and prevailing regulatory requirements. We recommend obtaining specific advice for your situation before taking action."
+        ]
+      },
+      {
+        "num": "DIS/05",
+        "title": "Case Reviews",
+        "paragraphs": [
+          "Case reviews published on this Website are anonymised and presented for illustrative purposes. Results vary according to circumstances and applicable regulatory requirements, and past outcomes do not guarantee similar results for other clients."
+        ]
+      },
+      {
+        "num": "DIS/06",
+        "title": "Contact",
+        "paragraphs": [
+          "If you have any questions about this Disclaimer, please contact us at {email}."
+        ]
+      }
+    ]
+  }
+}

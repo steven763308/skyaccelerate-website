@@ -1,17 +1,22 @@
-import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { SectionHeading, Eyebrow, Chevron } from "@/components/Bits";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { HomeHero } from "@/components/HomeHero";
-import {
-  processSteps,
-  differentiators,
-  timeline,
-  caseReviews,
-  insightPlaceholders,
-  company,
-} from "@/lib/site-config";
+import { getSiteConfig } from "@/lib/get-site-config";
+import type { Locale } from "@/i18n/routing";
 
-export default function HomePage() {
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale as Locale);
+  const t = await getTranslations();
+  const { processSteps, differentiators, timeline, caseReviews, insightPlaceholders, company } =
+    getSiteConfig(locale as Locale);
+
   return (
     <>
       {/* SECTION 1 — HERO / COVER BANNER */}
@@ -21,20 +26,14 @@ export default function HomePage() {
       <section className="section-pad">
         <div className="container-content grid md:grid-cols-12 gap-10">
           <div className="md:col-span-4">
-            <Eyebrow>About Our Approach</Eyebrow>
+            <Eyebrow>{t("HomePage.intro.eyebrow")}</Eyebrow>
             <h2 className="text-3xl md:text-4xl mt-5">
-              Navigating Compliance with Clarity
+              {t("HomePage.intro.title")}
             </h2>
           </div>
           <Reveal className="md:col-span-7 md:col-start-6" delay={0.1}>
             <p className="text-lg leading-relaxed text-graphite">
-              Businesses operating in regulated industries often face
-              changing requirements, layered documentation obligations and
-              multiple authorities to satisfy at once. Sky Accelerate Group
-              works alongside our clients as an advisory partner —
-              helping them understand what applies to their business, what
-              is required, and how to move through the process with
-              structure and confidence.
+              {t("HomePage.intro.body")}
             </p>
           </Reveal>
         </div>
@@ -44,43 +43,34 @@ export default function HomePage() {
       <section className="section-pad bg-paper-dim border-y border-steel-line">
         <div className="container-content grid md:grid-cols-12 gap-10">
           <div className="md:col-span-4">
-            <SectionHeading eyebrow="Core Expertise" title="Where We Focus" />
+            <SectionHeading
+              eyebrow={t("HomePage.coreExpertise.eyebrow")}
+              title={t("HomePage.coreExpertise.title")}
+            />
             <p className="text-sm text-graphite leading-relaxed max-w-xs">
-              Our primary area of expertise remains CIDB compliance and
-              registration advisory.{" "}
+              {t("HomePage.coreExpertise.note")}{" "}
               <Link href="/cidb-advisory" className="underline underline-offset-4 text-ink">
-                Explore CIDB Advisory
+                {t("HomePage.coreExpertise.link")}
               </Link>
             </p>
           </div>
           <Stagger className="md:col-span-7 md:col-start-6 space-y-0">
-            {[
-              {
-                title: "Contractor Compliance",
-                body: "CIDB contractor registration, renewal, upgrading and related advisory.",
-              },
-              {
-                title: "Personnel Compliance",
-                body: "CIDB personnel registration and related compliance support.",
-              },
-              {
-                title: "Regulatory Advisory",
-                body: "Selected regulatory, documentation and business support advisory.",
-              },
-            ].map((item, i) => (
-              <StaggerItem
-                key={item.title}
-                className={`flex gap-5 py-7 ${i > 0 ? "border-t border-steel-line" : ""}`}
-              >
-                <Chevron className="h-3 w-3 mt-2" tone="steel" />
-                <div>
-                  <h3 className="text-xl">{item.title}</h3>
-                  <p className="text-graphite text-sm leading-relaxed mt-2">
-                    {item.body}
-                  </p>
-                </div>
-              </StaggerItem>
-            ))}
+            {(t.raw("HomePage.coreExpertise.items") as { title: string; body: string }[]).map(
+              (item, i) => (
+                <StaggerItem
+                  key={item.title}
+                  className={`flex gap-5 py-7 ${i > 0 ? "border-t border-steel-line" : ""}`}
+                >
+                  <Chevron className="h-3 w-3 mt-2" tone="steel" />
+                  <div>
+                    <h3 className="text-xl">{item.title}</h3>
+                    <p className="text-graphite text-sm leading-relaxed mt-2">
+                      {item.body}
+                    </p>
+                  </div>
+                </StaggerItem>
+              )
+            )}
           </Stagger>
         </div>
       </section>
@@ -89,9 +79,9 @@ export default function HomePage() {
       <section className="section-pad">
         <div className="container-content">
           <SectionHeading
-            eyebrow="Our Process"
-            title="Our Approach"
-            subtitle="A structured process from first conversation to follow-up — not a promise of outcome, but a commitment to how we work."
+            eyebrow={t("HomePage.process.eyebrow")}
+            title={t("HomePage.process.title")}
+            subtitle={t("HomePage.process.subtitle")}
           />
           <Stagger className="grid md:grid-cols-5 gap-8">
             {processSteps.map((step, i) => (
@@ -116,8 +106,8 @@ export default function HomePage() {
       <section className="section-pad bg-navy-800 text-paper">
         <div className="container-content">
           <SectionHeading
-            eyebrow="Differentiation"
-            title="Why Sky Accelerate"
+            eyebrow={t("HomePage.why.eyebrow")}
+            title={t("HomePage.why.title")}
             light
           />
           <Stagger className="grid md:grid-cols-2 gap-x-14">
@@ -144,16 +134,19 @@ export default function HomePage() {
       {/* SECTION 6 — COMPANY EVOLUTION */}
       <section className="section-pad">
         <div className="container-content">
-          <SectionHeading eyebrow="Our History" title="Built on Experience. Structured for Growth." />
+          <SectionHeading
+            eyebrow={t("HomePage.history.eyebrow")}
+            title={t("HomePage.history.title")}
+          />
           <Stagger className="grid md:grid-cols-3 gap-10">
-            {timeline.map((t) => (
-              <StaggerItem key={t.year} className="relative pl-6 border-l border-steel-line">
+            {timeline.map((tl) => (
+              <StaggerItem key={tl.year} className="relative pl-6 border-l border-steel-line">
                 <span className="font-serif text-sm text-graphite">
-                  {t.year}
+                  {tl.year}
                 </span>
-                <h3 className="text-lg mt-3 mb-3">{t.title}</h3>
+                <h3 className="text-lg mt-3 mb-3">{tl.title}</h3>
                 <p className="text-sm text-graphite leading-relaxed">
-                  {t.body}
+                  {tl.body}
                 </p>
               </StaggerItem>
             ))}
@@ -165,12 +158,15 @@ export default function HomePage() {
       <section className="section-pad bg-paper-dim border-y border-steel-line">
         <div className="container-content">
           <div className="flex items-end justify-between flex-wrap gap-4 mb-14">
-            <SectionHeading eyebrow="Case Reviews" title="Selected Case Reviews" />
+            <SectionHeading
+              eyebrow={t("HomePage.caseReviews.eyebrow")}
+              title={t("HomePage.caseReviews.title")}
+            />
             <Link
               href="/case-reviews"
               className="text-xs tracking-wide2 uppercase underline underline-offset-4 mb-14"
             >
-              View All
+              {t("common.viewAll")}
             </Link>
           </div>
           <Stagger className="grid md:grid-cols-2 gap-10">
@@ -181,8 +177,7 @@ export default function HomePage() {
                   {c.situation}
                 </p>
                 <p className="text-xs text-graphite/70 italic">
-                  Results vary according to circumstances and applicable
-                  regulatory requirements.
+                  {t("common.resultsVary")}
                 </p>
               </StaggerItem>
             ))}
@@ -194,12 +189,15 @@ export default function HomePage() {
       <section className="section-pad">
         <div className="container-content">
           <div className="flex items-end justify-between flex-wrap gap-4 mb-14">
-            <SectionHeading eyebrow="Knowledge Centre" title="Insights" />
+            <SectionHeading
+              eyebrow={t("HomePage.insights.eyebrow")}
+              title={t("HomePage.insights.title")}
+            />
             <Link
               href="/insights"
               className="text-xs tracking-wide2 uppercase underline underline-offset-4 mb-14"
             >
-              View All
+              {t("common.viewAll")}
             </Link>
           </div>
           <Stagger className="grid md:grid-cols-3 gap-8">
@@ -220,15 +218,14 @@ export default function HomePage() {
       <section className="bg-navy-800 text-paper">
         <Reveal className="container-content py-24 md:py-32 text-center">
           <h2 className="text-3xl md:text-4xl max-w-2xl mx-auto">
-            Need Clarity on a Compliance Requirement?
+            {t("HomePage.finalCta.title")}
           </h2>
           <p className="text-steel mt-6 max-w-xl mx-auto leading-relaxed">
-            Speak with our advisory team to understand the requirements,
-            documentation and appropriate next steps for your business.
+            {t("HomePage.finalCta.body")}
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link href="/contact" className="btn-primary bg-paper text-ink hover:bg-steel/40">
-              Request a Consultation
+              {t("common.requestConsultation")}
             </Link>
             <a
               href={company.contact.whatsappHref}
@@ -236,7 +233,7 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className="btn-outline-light"
             >
-              WhatsApp Our Team
+              {t("common.whatsappOurTeam")}
             </a>
           </div>
         </Reveal>

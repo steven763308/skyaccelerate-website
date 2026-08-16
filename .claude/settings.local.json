@@ -42,7 +42,16 @@
       "PowerShell(Stop-Process -Id 24188 -Force -ErrorAction SilentlyContinue)",
       "PowerShell(\"stopped both\")",
       "Bash(curl -s -o /dev/null -w \"home:%{http_code}\\\\n\" http://localhost:3000/)",
-      "Bash(curl -sI \"http://localhost:3000/_next/image?url=%2Fbrand%2Fhero-skyline.jpg&w=1920&q=80\")"
+      "Bash(curl -sI \"http://localhost:3000/_next/image?url=%2Fbrand%2Fhero-skyline.jpg&w=1920&q=80\")",
+      "Bash(node -e \"console.log\\(require\\('./node_modules/next-intl/package.json'\\).version\\)\")",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('messages/en.json','utf8'\\)\\); console.log\\('en.json OK'\\)\")",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('messages/zh.json','utf8'\\)\\); console.log\\('zh.json OK'\\)\")",
+      "Bash(find \"C:/Users/steve/AppData/Local/Temp/claude\" -iname \"*.png\" -o -iname \"*.jpg\" -o -iname \"*.jpeg\" 2>/dev/null | grep -v node_modules | head -20)",
+      "Read(//c/Users/steve/AppData/Local/Temp/claude/**)",
+      "Bash(tail -60 /tmp/dev7.log)",
+      "PowerShell(Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.LocalPort -eq 3001 } | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue; \"stopped $\\($_.OwningProcess\\)\" })",
+      "PowerShell(Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.LocalPort -eq 3000 } | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue; \"stopped $\\($_.OwningProcess\\)\" })",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('messages/zh.json','utf8'\\)\\); console.log\\('zh.json valid'\\)\")"
     ]
   }
 }

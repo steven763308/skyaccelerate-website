@@ -18,7 +18,7 @@ export const company = {
     line2: "47300 Petaling Jaya, Selangor, Malaysia",
   },
   contact: {
-    email: "steven@skyconsultancymns.com",
+    email: "enquiry@skyaccelerate.com",
     phoneDisplay: "+6012-558 3398",
     phoneHref: "+60125583398",
     whatsappHref: "https://wa.me/60125583398",

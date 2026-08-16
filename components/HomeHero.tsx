@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { HeroIn } from "@/components/motion";
 import { company } from "@/lib/site-config";
 
@@ -17,6 +18,7 @@ const HERO_BLUR_DATA_URL =
  * homepage, so it keeps its full visual weight. */
 export function HomeHero() {
   const reduce = useReducedMotion();
+  const t = useTranslations();
 
   return (
     <section className="relative bg-navy-800 text-paper overflow-hidden">
@@ -56,34 +58,34 @@ export function HomeHero() {
         <HeroIn>
           <p className="eyebrow-light">
             <span className="h-1.5 w-1.5 rounded-full bg-steel" />
-            Compliance &amp; Strategic Advisory
+            {t("homeHero.eyebrow")}
           </p>
         </HeroIn>
         <HeroIn delay={0.08}>
           <h1 className="font-display uppercase font-bold text-[2.5rem] leading-[1.05] tracking-tight md:text-[4.25rem] md:leading-[1.02] max-w-3xl mt-7">
-            Integrated Compliance
-            <br />&amp; Strategic Advisory
+            {t("homeHero.titleLine1")}
+            <br />
+            {t("homeHero.titleLine2")}
           </h1>
         </HeroIn>
         <HeroIn delay={0.16}>
           <p className="mt-6 text-lg md:text-xl text-steel max-w-xl">
-            For the <span className="text-paper font-medium">Construction and Related Industries</span>.
+            {t("homeHero.forPrefix")}{" "}
+            <span className="text-paper font-medium">{t("homeHero.industries")}</span>
           </p>
         </HeroIn>
         <HeroIn delay={0.24}>
           <p className="mt-6 text-steel/90 max-w-2xl leading-relaxed">
-            Sky Accelerate Group helps businesses navigate regulatory
-            requirements through structured, practical and responsible
-            advisory solutions.
+            {t("homeHero.description")}
           </p>
         </HeroIn>
         <HeroIn delay={0.32}>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link href="/contact" className="btn-primary bg-paper text-ink hover:bg-steel/40">
-              Request a Consultation
+              {t("common.requestConsultation")}
             </Link>
             <Link href="/services" className="btn-outline-light">
-              Explore Our Services
+              {t("common.exploreServices")}
             </Link>
           </div>
         </HeroIn>

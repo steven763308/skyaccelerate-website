@@ -1,13 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { nav, company } from "@/lib/site-config";
+import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { getSiteConfig } from "@/lib/get-site-config";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import type { Locale } from "@/i18n/routing";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const locale = useLocale() as Locale;
+  const t = useTranslations();
+  const { nav, company } = getSiteConfig(locale);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -54,14 +60,15 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden lg:flex items-center gap-6">
+          <LanguageSwitcher />
           <Link href="/contact" className="btn-primary">
-            Request a Consultation
+            {t("common.requestConsultation")}
           </Link>
         </div>
 
         <button
-          aria-label="Toggle navigation menu"
+          aria-label={t("header.toggleMenu")}
           aria-expanded={open}
           className="lg:hidden flex flex-col gap-1.5 h-10 w-10 items-center justify-center"
           onClick={() => setOpen((v) => !v)}
@@ -92,12 +99,15 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+            <div className="pt-1">
+              <LanguageSwitcher />
+            </div>
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
               className="btn-primary justify-center mt-2"
             >
-              Request a Consultation
+              {t("common.requestConsultation")}
             </Link>
             <a
               href={company.contact.whatsappHref}
@@ -105,7 +115,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="btn-outline justify-center"
             >
-              WhatsApp Us
+              {t("common.whatsappUs")}
             </a>
           </div>
         </div>

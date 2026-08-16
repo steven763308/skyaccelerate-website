@@ -31,9 +31,13 @@ const config: Config = {
         graphite: "#57616F",
       },
       fontFamily: {
-        serif: ["var(--font-serif)", "Georgia", "serif"],
-        sans: ["var(--font-sans)", "Helvetica", "Arial", "sans-serif"],
-        display: ["var(--font-display)", "Arial Narrow", "sans-serif"],
+        // var(--font-noto-sc) is appended before the generic fallback in
+        // both stacks: Work Sans / Oswald don't have CJK glyphs, so the
+        // browser automatically uses Noto Sans SC for Chinese characters
+        // while Latin text keeps rendering in the primary font.
+        serif: ["var(--font-serif)", "var(--font-noto-sc)", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "var(--font-noto-sc)", "Helvetica", "Arial", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-noto-sc)", "Arial Narrow", "sans-serif"],
       },
       maxWidth: {
         content: "1280px",

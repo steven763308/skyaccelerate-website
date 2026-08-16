@@ -1,9 +1,10 @@
 import { ReactNode } from "react";
+import { getTranslations } from "next-intl/server";
 import { Eyebrow } from "@/components/Bits";
 import { HeroIn, Reveal } from "@/components/motion";
 import { company } from "@/lib/site-config";
 
-export function LegalLayout({
+export async function LegalLayout({
   eyebrow,
   title,
   updated,
@@ -14,6 +15,8 @@ export function LegalLayout({
   updated: string;
   children: ReactNode;
 }) {
+  const t = await getTranslations("common");
+
   return (
     <>
       <section className="bg-navy-800 text-paper">
@@ -26,7 +29,7 @@ export function LegalLayout({
           </HeroIn>
           <HeroIn delay={0.16}>
             <p className="mt-5 text-xs text-steel">
-              Last updated: {updated}
+              {t("lastUpdated")} {updated}
             </p>
           </HeroIn>
         </div>

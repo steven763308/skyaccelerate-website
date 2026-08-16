@@ -42,8 +42,7 @@ All company details, contact info, navigation, services, case studies and
 insight placeholders live in `lib/site-config.ts`. Edit there — nothing is
 hard-coded across multiple pages.
 
-Update `steven@skyconsultancymns.com` to the future @skyaccelerate.com
-address in this one file when ready.
+Contact email is `enquiry@skyaccelerate.com`, set in this one file.
 
 ## Next steps / not yet built
 - Contact form is currently front-end only (shows a confirmation state).

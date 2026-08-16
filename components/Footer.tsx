@@ -1,8 +1,14 @@
-import Link from "next/link";
 import Image from "next/image";
-import { company, nav, footerLegalLinks } from "@/lib/site-config";
+import { getLocale, getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import { getSiteConfig } from "@/lib/get-site-config";
+import type { Locale } from "@/i18n/routing";
 
-export default function Footer() {
+export default async function Footer() {
+  const locale = (await getLocale()) as Locale;
+  const t = await getTranslations();
+  const { company, nav, footerLegalLinks } = getSiteConfig(locale);
+
   return (
     <footer className="bg-navy-800 text-paper">
       <div className="container-content pt-20 pb-10">
@@ -31,7 +37,7 @@ export default function Footer() {
           </div>
 
           <div className="md:col-span-3">
-            <p className="eyebrow-light mb-4">Company</p>
+            <p className="eyebrow-light mb-4">{t("footer.companyHeading")}</p>
             <ul className="space-y-3">
               {nav.slice(1).map((item) => (
                 <li key={item.href}>
@@ -47,7 +53,7 @@ export default function Footer() {
           </div>
 
           <div className="md:col-span-4">
-            <p className="eyebrow-light mb-4">Contact</p>
+            <p className="eyebrow-light mb-4">{t("footer.contactHeading")}</p>
             <ul className="space-y-3 text-sm text-steel">
               <li>
                 <a
@@ -72,7 +78,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="hover:text-paper transition-colors"
                 >
-                  WhatsApp Our Team
+                  {t("common.whatsappOurTeam")}
                 </a>
               </li>
             </ul>
@@ -81,19 +87,14 @@ export default function Footer() {
 
         <div className="hairline border-steel-line-dark mt-14 pt-8">
           <p className="text-xs leading-relaxed text-steel max-w-3xl">
-            {company.legalName} is an independent advisory company and is not
-            a government authority. References to CIDB, MOF, JKKP, SPAN, SSM
-            or any other authority are made in relation to their respective
-            regulatory functions only and do not imply affiliation,
-            appointment or partnership. Regulatory approvals remain subject
-            to the relevant authorities and applicable requirements.
+            {t("footer.disclaimer", { legalName: company.legalName })}
           </p>
         </div>
 
         <div className="flex flex-col md:flex-row justify-between gap-4 mt-8 text-xs text-steel">
           <p>
-            © {new Date().getFullYear()} {company.legalName}. All Rights
-            Reserved.
+            © {new Date().getFullYear()} {company.legalName}.{" "}
+            {t("footer.rightsReserved")}
           </p>
           <div className="flex gap-6">
             {footerLegalLinks.map((link) => (

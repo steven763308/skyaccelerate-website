@@ -1,17 +1,35 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { PageHero, SectionHeading, NoteBox, Chevron } from "@/components/Bits";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { services } from "@/lib/site-config";
+import { getSiteConfig } from "@/lib/get-site-config";
+import type { Locale } from "@/i18n/routing";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "In-house compliance advisory and partner-supported services from Sky Accelerate Group, spanning CIDB registration, personnel compliance, and construction-related regulatory support.",
-  alternates: { canonical: "/services" },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "ServicesPage" });
+  return {
+    title: t("hero.title"),
+    description: t("hero.subtitle"),
+    alternates: { canonical: "/services" },
+  };
+}
 
-export default function ServicesPage() {
+export default async function ServicesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale as Locale);
+  const t = await getTranslations();
+  const tCommon = await getTranslations("common");
+  const { services } = getSiteConfig(locale as Locale);
   const inHouse = services.filter((s) => s.category === "In-House Advisory");
   const partner = services.filter(
     (s) => s.category === "Partner-Supported Services"
@@ -20,17 +38,17 @@ export default function ServicesPage() {
   return (
     <>
       <PageHero
-        eyebrow="What We Do"
-        title="Services"
-        subtitle="A clear distinction between what Sky Accelerate Group advises and delivers in-house, and what is coordinated through trusted professional partners."
+        eyebrow={t("ServicesPage.hero.eyebrow")}
+        title={t("ServicesPage.hero.title")}
+        subtitle={t("ServicesPage.hero.subtitle")}
       />
 
       <section className="section-pad">
         <div className="container-content">
           <SectionHeading
-            eyebrow="In-House"
-            title="In-House Advisory"
-            subtitle="Services advised on and delivered directly by Sky Accelerate Group, led by our core CIDB compliance expertise."
+            eyebrow={t("ServicesPage.inHouse.eyebrow")}
+            title={t("ServicesPage.inHouse.title")}
+            subtitle={t("ServicesPage.inHouse.subtitle")}
           />
           <Stagger className="border-t border-steel-line">
             {inHouse.map((s, i) => (
@@ -66,7 +84,7 @@ export default function ServicesPage() {
                     href="/contact"
                     className="inline-block mt-4 text-xs tracking-wide2 uppercase underline underline-offset-4"
                   >
-                    Discuss This Service
+                    {tCommon("discussThisService")}
                   </Link>
                 </div>
               </StaggerItem>
@@ -78,9 +96,9 @@ export default function ServicesPage() {
       <section className="section-pad bg-paper-dim border-y border-steel-line">
         <div className="container-content">
           <SectionHeading
-            eyebrow="Partner-Supported"
-            title="Partner-Supported Services"
-            subtitle="Extended regulatory support coordinated through trusted professional partners where appropriate. These are not performed directly in-house."
+            eyebrow={t("ServicesPage.partner.eyebrow")}
+            title={t("ServicesPage.partner.title")}
+            subtitle={t("ServicesPage.partner.subtitle")}
           />
           <Stagger className="border-t border-steel-line">
             {partner.map((s, i) => (
@@ -115,7 +133,7 @@ export default function ServicesPage() {
                     href="/contact"
                     className="inline-block mt-4 text-xs tracking-wide2 uppercase underline underline-offset-4"
                   >
-                    Discuss This Service
+                    {tCommon("discussThisService")}
                   </Link>
                 </div>
               </StaggerItem>
@@ -127,10 +145,10 @@ export default function ServicesPage() {
       <section className="py-20">
         <Reveal className="container-content text-center">
           <h2 className="text-2xl md:text-3xl mb-6">
-            Not Sure Which Service Applies?
+            {t("ServicesPage.cta.title")}
           </h2>
           <Link href="/contact" className="btn-primary">
-            Request a Consultation
+            {tCommon("requestConsultation")}
           </Link>
         </Reveal>
       </section>
