@@ -54,9 +54,21 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Honeypot — invisible to real visitors, but simple bots fill in
+          every field they find. Any value here silently short-circuits
+          the submission server-side. */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
+      />
+
       <div className="grid sm:grid-cols-2 gap-6">
-        <Field label={t("fullName")} name="name" required />
-        <Field label={t("companyName")} name="company" />
+        <Field label={t("fullName")} name="fullName" required />
+        <Field label={t("companyName")} name="companyName" />
       </div>
       <div className="grid sm:grid-cols-2 gap-6">
         <Field label={t("phoneNumber")} name="phone" type="tel" required />

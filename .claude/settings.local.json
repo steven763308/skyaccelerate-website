@@ -51,7 +51,22 @@
       "Bash(tail -60 /tmp/dev7.log)",
       "PowerShell(Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.LocalPort -eq 3001 } | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue; \"stopped $\\($_.OwningProcess\\)\" })",
       "PowerShell(Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.LocalPort -eq 3000 } | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue; \"stopped $\\($_.OwningProcess\\)\" })",
-      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('messages/zh.json','utf8'\\)\\); console.log\\('zh.json valid'\\)\")"
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('messages/zh.json','utf8'\\)\\); console.log\\('zh.json valid'\\)\")",
+      "Bash(ls -la /d/ByteX/skyaccelerate-v2/public/brand/ 2>&1 *)",
+      "Bash(curl -s -o /dev/null -w \"case-reviews EN: %{http_code}\\\\n\" http://localhost:3000/case-reviews)",
+      "Bash(curl -s -o /dev/null -w \"case-reviews ZH: %{http_code}\\\\n\" http://localhost:3000/zh/case-reviews)",
+      "Bash(ls -la /c/Users/steve/Downloads/ 2>/dev/null | grep -i -E \"cidb|ppk|epass|spkk|sijil|perakuan\" | head -20 *)",
+      "Read(//c/Users/steve/Downloads//**)",
+      "Read(//c/Users/steve/**)",
+      "Bash(cp \"/c/Users/steve/Downloads/CIDB PPK.png\" \"/d/ByteX/skyaccelerate-v2/public/brand/cidb-ppk-certificate.jpg\")",
+      "Bash(cp \"/c/Users/steve/Downloads/CIDB SPKK.png\" \"/d/ByteX/skyaccelerate-v2/public/brand/cidb-spkk-certificate.jpg\")",
+      "Bash(cp \"/c/Users/steve/Downloads/CIDB ePass.jpg\" \"/d/ByteX/skyaccelerate-v2/public/brand/cidb-personnel-epass.jpg\")",
+      "Bash(curl -s -o /dev/null -w \"EN case-reviews: %{http_code}\\\\n\" http://localhost:3000/case-reviews)",
+      "Bash(curl -s -o /dev/null -w \"ZH case-reviews: %{http_code}\\\\n\" http://localhost:3000/zh/case-reviews)",
+      "Bash(curl -s -X POST http://localhost:3000/api/contact -H \"Content-Type: application/json\" -d '{}')",
+      "Bash(curl -s -X POST http://localhost:3000/api/contact -H \"Content-Type: application/json\" -d '{\"fullName\":\"Test User\",\"phone\":\"0123456789\",\"email\":\"not-an-email\",\"service\":\"CIDB Renewal\"}')",
+      "Bash(curl -s -X POST http://localhost:3000/api/contact -H \"Content-Type: application/json\" -d '{\"fullName\":\"Bot\",\"phone\":\"123\",\"email\":\"bot@example.com\",\"service\":\"Test\",\"website\":\"http://spam.example\"}')",
+      "Bash(curl -s -X POST http://localhost:3000/api/contact -H \"Content-Type: application/json\" -d '{\"fullName\":\"Jane Tan\",\"companyName\":\"Acme Sdn Bhd\",\"phone\":\"+6012-345 6789\",\"email\":\"jane@example.com\",\"service\":\"CIDB Renewal\",\"message\":\"Please advise on renewal timeline.\"}')"
     ]
   }
 }

@@ -195,6 +195,7 @@ export type CaseReview = {
   requirement: string;
   role: string;
   outcome: string;
+  image?: string;
 };
 
 export const caseReviews: CaseReview[] = [
@@ -205,6 +206,7 @@ export const caseReviews: CaseReview[] = [
     requirement: "根据现行 CIDB 要求，确认申请资格、整理所需文件，并确定适用类别与等级。",
     role: "天擎顾问集团审视了该公司的现状，就适用类别与等级提供建议，并协助准备及整理所需文件。",
     outcome: "申请已依据当时确认的要求，以有条理且结构化的方式提交。",
+    image: "/brand/cidb-ppk-certificate.png",
   },
   {
     ref: "CASE/2026-02",
@@ -229,6 +231,24 @@ export const caseReviews: CaseReview[] = [
     requirement: "厘清文件不符之处，并依据适用要求准备更正后的申请材料。",
     role: "天擎顾问集团审视相关问题，就所需的更正文件提供建议，并协调重新提交。",
     outcome: "已完成更正申请的准备与提交，并以结构化方式解决所发现的问题。",
+  },
+  {
+    ref: "CASE/2026-05",
+    category: "SPKK——政府工程投标资格证书",
+    situation: "一家 G3 承包商希望投标政府建筑项目，但尚未取得政府项目投标资格所需的认证。",
+    requirement: "根据现行 CIDB 要求，评估 Sijil Perolehan Kerja Kerajaan（SPKK）的申请资格，并准备相关支持文件。",
+    role: "天擎顾问集团就 SPKK 申请资格提供建议，审视客户现有注册状况，并协助准备及整理所需文件。",
+    outcome: "SPKK 申请已依据当时确认的要求，以有条理且结构化的方式提交。",
+    image: "/brand/cidb-spkk-certificate.png",
+  },
+  {
+    ref: "CASE/2026-06",
+    category: "CIDB 建筑人员注册",
+    situation: "一名个人需要完成 CIDB 建筑人员（Personnel Binaan）注册，以正式取得注册建筑人员身份。",
+    requirement: "根据现行 CIDB 要求，确认适用的注册类别，并准备相关支持文件。",
+    role: "天擎顾问集团就适用的人员类别提供建议，并协助准备及整理提交所需的文件。",
+    outcome: "注册已顺利完成，并依据当时确认的要求核发 CIDB 建筑人员注册证书（ePASS）。",
+    image: "/brand/cidb-personnel-epass.jpg",
   },
 ];
 

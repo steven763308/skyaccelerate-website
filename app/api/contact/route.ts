@@ -2,82 +2,217 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { company } from "@/lib/site-config";
 
+// Runs on Node.js (not Edge) — required by the Resend SDK and for a
+// consistent runtime on Vercel.
+export const runtime = "nodejs";
+
+// --- Basic in-memory rate limiting ---------------------------------------
+// Best-effort spam throttle: caps submissions per IP within a rolling
+// window. Serverless functions on Vercel are ephemeral and can run as
+// multiple concurrent instances, so this state isn't shared globally —
+// it only protects within a single warm instance. That's sufficient to
+// blunt basic bots/retries; for guaranteed cross-instance limiting, back
+// this with Vercel KV / Upstash Redis instead.
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+const RATE_LIMIT_MAX = 5; // max submissions per IP per window
+const submissionLog = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (submissionLog.get(ip) ?? []).filter(
+    (t) => now - t < RATE_LIMIT_WINDOW_MS
+  );
+  recent.push(now);
+  submissionLog.set(ip, recent);
+
+  // Opportunistically forget IPs with no recent activity so the map
+  // doesn't grow unbounded over the life of a warm instance.
+  if (submissionLog.size > 500) {
+    for (const [key, timestamps] of submissionLog) {
+      if (timestamps.every((t) => now - t >= RATE_LIMIT_WINDOW_MS)) {
+        submissionLog.delete(key);
+      }
+    }
+  }
+
+  return recent.length > RATE_LIMIT_MAX;
+}
+
+function getClientIp(req: Request): string {
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  if (forwardedFor) return forwardedFor.split(",")[0].trim();
+  return req.headers.get("x-real-ip") || "unknown";
+}
+
+// --- Validation & sanitisation -------------------------------------------
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MAX_LENGTHS = {
+  fullName: 200,
+  companyName: 200,
+  phone: 50,
+  email: 200,
+  service: 200,
+  message: 5000,
+};
+
+function escapeHtml(value: string) {
+  return value.replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string)
+  );
+}
+
+const GENERIC_ERROR =
+  "We were unable to submit your enquiry. Please try again or contact us directly.";
+
 export async function POST(req: Request) {
+  const ip = getClientIp(req);
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Too many submissions. Please try again later." },
+      { status: 429 }
+    );
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  const name = String(body.name ?? "").trim();
-  const companyName = String(body.company ?? "").trim();
-  const phone = String(body.phone ?? "").trim();
-  const email = String(body.email ?? "").trim();
-  const service = String(body.service ?? "").trim();
-  const message = String(body.message ?? "").trim();
+  // Honeypot: a field that's invisible to real visitors but that simple
+  // bots fill in automatically. Silently pretend success so bots don't
+  // learn to avoid it.
+  if (String(body.website ?? "").trim().length > 0) {
+    return NextResponse.json({ ok: true });
+  }
 
-  if (!name || !phone || !email || !service) {
+  const fullName = String(body.fullName ?? "").trim().slice(0, MAX_LENGTHS.fullName);
+  const companyName = String(body.companyName ?? "").trim().slice(0, MAX_LENGTHS.companyName);
+  const phone = String(body.phone ?? "").trim().slice(0, MAX_LENGTHS.phone);
+  const email = String(body.email ?? "").trim().slice(0, MAX_LENGTHS.email);
+  const service = String(body.service ?? "").trim().slice(0, MAX_LENGTHS.service);
+  const message = String(body.message ?? "").trim().slice(0, MAX_LENGTHS.message);
+
+  if (!fullName || !phone || !email || !service) {
     return NextResponse.json(
       { error: "Please fill in all required fields." },
       { status: 400 }
     );
   }
 
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailPattern.test(email)) {
-    return NextResponse.json({ error: "Please provide a valid email." }, { status: 400 });
+  if (!EMAIL_PATTERN.test(email)) {
+    return NextResponse.json({ error: "Please provide a valid email address." }, { status: 400 });
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.error("RESEND_API_KEY is not configured.");
-    return NextResponse.json(
-      { error: "Email service is not configured yet. Please try WhatsApp or phone instead." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: GENERIC_ERROR }, { status: 500 });
   }
 
-  const resend = new Resend(apiKey);
-  const fromAddress = process.env.RESEND_FROM_EMAIL || "Sky Accelerate Group <onboarding@resend.dev>";
+  const submittedAt = new Date();
+  const timestamp = new Intl.DateTimeFormat("en-MY", {
+    dateStyle: "long",
+    timeStyle: "short",
+    timeZone: "Asia/Kuala_Lumpur",
+  }).format(submittedAt);
 
-  const escapeHtml = (value: string) =>
-    value.replace(/[&<>"']/g, (c) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string)
-    );
+  const resend = new Resend(apiKey);
+  const fromAddress =
+    process.env.RESEND_FROM_EMAIL || "Sky Accelerate Website <website@skyaccelerate.com>";
+
+  const html = renderEnquiryEmail({
+    fullName: escapeHtml(fullName),
+    companyName: escapeHtml(companyName || "—"),
+    phone: escapeHtml(phone),
+    email: escapeHtml(email),
+    service: escapeHtml(service),
+    message: escapeHtml(message || "—").replace(/\n/g, "<br/>"),
+    timestamp,
+  });
 
   try {
     const { error } = await resend.emails.send({
       from: fromAddress,
       to: company.contact.email,
       replyTo: email,
-      subject: `New Enquiry — ${service} (${name})`,
-      html: `
-        <h2>New enquiry from the website contact form</h2>
-        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-        <p><strong>Company:</strong> ${escapeHtml(companyName || "—")}</p>
-        <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
-        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-        <p><strong>Service Required:</strong> ${escapeHtml(service)}</p>
-        <p><strong>Message:</strong></p>
-        <p>${escapeHtml(message || "—").replace(/\n/g, "<br/>")}</p>
-      `,
+      subject: `New Website Enquiry — ${service}`,
+      html,
     });
 
     if (error) {
       console.error("Resend error:", error);
-      return NextResponse.json(
-        { error: "We couldn't send your enquiry right now. Please try WhatsApp or phone instead." },
-        { status: 502 }
-      );
+      return NextResponse.json({ error: GENERIC_ERROR }, { status: 502 });
     }
 
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Contact form send failed:", err);
-    return NextResponse.json(
-      { error: "We couldn't send your enquiry right now. Please try WhatsApp or phone instead." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: GENERIC_ERROR }, { status: 500 });
   }
+}
+
+function renderEnquiryEmail(fields: {
+  fullName: string;
+  companyName: string;
+  phone: string;
+  email: string;
+  service: string;
+  message: string;
+  timestamp: string;
+}) {
+  const row = (label: string, value: string) => `
+    <tr>
+      <td style="padding:14px 0;border-top:1px solid #DEDBD1;">
+        <p style="margin:0 0 4px;font:600 11px/1.4 Arial,Helvetica,sans-serif;letter-spacing:0.08em;text-transform:uppercase;color:#8F99AA;">
+          ${label}
+        </p>
+        <p style="margin:0;font:400 15px/1.5 Arial,Helvetica,sans-serif;color:#12182A;">
+          ${value}
+        </p>
+      </td>
+    </tr>`;
+
+  return `<!doctype html>
+<html>
+  <body style="margin:0;padding:0;background-color:#F1EDE5;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1EDE5;padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#FAF8F4;">
+            <tr>
+              <td style="background-color:#16223D;padding:28px 32px;">
+                <p style="margin:0;font:700 15px/1.2 Arial,Helvetica,sans-serif;letter-spacing:0.02em;color:#FAF8F4;">
+                  SKY ACCELERATE GROUP
+                </p>
+                <p style="margin:8px 0 0;font:600 11px/1.4 Arial,Helvetica,sans-serif;letter-spacing:0.1em;text-transform:uppercase;color:#8F99AA;">
+                  New Website Enquiry
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:8px 32px 4px;">
+                ${row("Full Name", fields.fullName)}
+                ${row("Company Name", fields.companyName)}
+                ${row("Phone", fields.phone)}
+                ${row("Email", fields.email)}
+                ${row("Service Required", fields.service)}
+                ${row("Message", fields.message)}
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px 32px 28px;">
+                <p style="margin:16px 0 0;padding-top:14px;border-top:1px solid #DEDBD1;font:400 12px/1.5 Arial,Helvetica,sans-serif;color:#57616F;">
+                  Submitted ${fields.timestamp} (Malaysia time) via the Sky Accelerate Group website contact form.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
 }

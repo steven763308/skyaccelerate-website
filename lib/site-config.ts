@@ -219,6 +219,9 @@ export type CaseReview = {
   requirement: string;
   role: string;
   outcome: string;
+  /** Optional path (under /public) to a redacted supporting certificate,
+   * shown as a small thumbnail on the case card. */
+  image?: string;
 };
 
 export const caseReviews: CaseReview[] = [
@@ -233,6 +236,7 @@ export const caseReviews: CaseReview[] = [
       "SAG reviewed the company's standing, advised on the applicable category and grade, and assisted in preparing and organising the required documentation.",
     outcome:
       "Application was submitted in an organised and structured manner in line with the requirements identified at the time.",
+    image: "/brand/cidb-ppk-certificate.png",
   },
   {
     ref: "CASE/2026-02",
@@ -269,6 +273,32 @@ export const caseReviews: CaseReview[] = [
       "SAG reviewed the matter, advised on the corrective documentation required, and coordinated a revised submission.",
     outcome:
       "A corrected submission was prepared and lodged in a structured manner addressing the identified discrepancy.",
+  },
+  {
+    ref: "CASE/2026-05",
+    category: "SPKK — Government Work Procurement Certification",
+    situation:
+      "A G3 contractor wished to tender for government construction projects but had not yet obtained the certification required for government project eligibility.",
+    requirement:
+      "Assessment of eligibility for Sijil Perolehan Kerja Kerajaan (SPKK) and preparation of the supporting documentation under the applicable CIDB requirements.",
+    role:
+      "SAG advised on the SPKK eligibility criteria, reviewed the client's existing registration standing, and assisted in preparing and organising the required documentation.",
+    outcome:
+      "The SPKK application was submitted in an organised and structured manner in line with the requirements identified at the time.",
+    image: "/brand/cidb-spkk-certificate.png",
+  },
+  {
+    ref: "CASE/2026-06",
+    category: "CIDB Personnel Registration",
+    situation:
+      "An individual required CIDB Personnel Binaan registration to formalise their standing as registered construction personnel.",
+    requirement:
+      "Confirmation of the applicable registration category and preparation of the supporting documentation under prevailing CIDB requirements.",
+    role:
+      "SAG advised on the applicable personnel category and assisted in preparing and organising the required documentation for submission.",
+    outcome:
+      "The registration was completed and the CIDB Personnel Registration Certificate (ePASS) was issued in line with the requirements identified at the time.",
+    image: "/brand/cidb-personnel-epass.jpg",
   },
 ];
 

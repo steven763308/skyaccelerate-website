@@ -13,7 +13,9 @@
     "resultsVary": "Results vary according to circumstances and applicable regulatory requirements.",
     "languageSwitcherLabel": "Language",
     "legal": "Legal",
-    "lastUpdated": "Last updated:"
+    "lastUpdated": "Last updated:",
+    "viewCertificate": "View Certificate",
+    "close": "Close"
   },
   "header": {
     "toggleMenu": "Toggle navigation menu"
@@ -122,8 +124,8 @@
     },
     "philosophy": {
       "eyebrow": "Our Philosophy",
-      "quote": "“Compliance should not be treated simply as paperwork. It is part of responsible business operations and long-term risk management.”",
-      "body": "We see every registration, renewal or submission as one part of a larger picture — how a business protects itself, plans ahead, and continues to operate with confidence within a regulated industry. That is the lens we bring to every engagement."
+      "quote": "“Compliance goes beyond a one-time service. It is a long-term commitment built on trust, professional expertise, and responsible business operations.”",
+      "body": "We see every case submission as one part of a larger picture — how a business protects itself, plans ahead, and continues to operate with confidence within a regulated industry. That is the lens we bring to every engagement."
     }
   },
   "ServicesPage": {
@@ -259,12 +261,6 @@
       "outcome": "Outcome"
     },
     "importantNote": "Important note: results vary according to circumstances and applicable regulatory requirements.",
-    "showcase": {
-      "eyebrow": "Verified Registration",
-      "title": "CIDB PPK Registration Certificate",
-      "body": "An actual CIDB PPK (Perakuan Pendaftaran Kontraktor) registration certificate from one of our client engagements, shown here with identifying details redacted to protect client confidentiality.",
-      "caption": "CIDB PPK Registration Certificate — identifying details redacted for client confidentiality."
-    },
     "cta": {
       "title": "Discuss a Situation Similar to Yours"
     }
@@ -305,8 +301,8 @@
     "submit": "Submit Enquiry",
     "submitting": "Sending…",
     "thankYouTitle": "Thank You",
-    "thankYouBody": "Your enquiry has been received. Our advisory team will get back to you shortly.",
-    "genericError": "Something went wrong. Please try again."
+    "thankYouBody": "Thank you for your enquiry. Our team will be in touch shortly.",
+    "genericError": "We were unable to submit your enquiry. Please try again or contact us directly."
   },
   "PrivacyPolicyPage": {
     "title": "Privacy Policy",

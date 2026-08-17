@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import fs from "fs";
 import path from "path";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { PageHero, SectionHeading } from "@/components/Bits";
+import { PageHero } from "@/components/Bits";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { CertificateViewer } from "@/components/CertificateViewer";
 import { getSiteConfig } from "@/lib/get-site-config";
 import type { Locale } from "@/i18n/routing";
 
-const CERTIFICATE_SRC = "/brand/cidb-ppk-certificate.jpg";
-const hasCertificateImage = fs.existsSync(
-  path.join(process.cwd(), "public", CERTIFICATE_SRC)
-);
+function fileExists(publicSrc: string) {
+  return fs.existsSync(path.join(process.cwd(), "public", publicSrc));
+}
 
 export async function generateMetadata({
   params,
@@ -55,83 +54,59 @@ export default async function CaseReviewsPage({
             </p>
           </Reveal>
 
-          {/* VERIFIED REGISTRATION SHOWCASE — actual (redacted) CIDB PPK
-              certificate backing the first case review below. */}
-          <Reveal className="mb-16 border border-steel-line">
-            <div className="grid md:grid-cols-2">
-              <div className="relative min-h-[320px] md:min-h-[420px] bg-paper-dim">
-                {hasCertificateImage ? (
-                  <Image
-                    src={CERTIFICATE_SRC}
-                    alt={t("showcase.caption")}
-                    fill
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-contain object-center p-4"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center px-8 text-center">
-                    <p className="text-xs text-graphite/60 leading-relaxed">
-                      Certificate image pending — add{" "}
-                      <code className="text-graphite/80">
-                        public{CERTIFICATE_SRC.replace(/\//g, "\\")}
-                      </code>
-                    </p>
-                  </div>
-                )}
-              </div>
-              <div className="p-8 md:p-10 flex flex-col justify-center">
-                <p className="eyebrow mb-4">{t("showcase.eyebrow")}</p>
-                <h3 className="text-xl mb-4">{t("showcase.title")}</h3>
-                <p className="text-sm text-graphite leading-relaxed">
-                  {t("showcase.body")}
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
           <Stagger className="space-y-16">
-            {caseReviews.map((c) => (
-              <StaggerItem
-                key={c.ref}
-                as="article"
-                className="grid md:grid-cols-12 gap-8 border-t border-steel-line pt-10"
-              >
-                <div className="md:col-span-3">
-                  <h2 className="text-xl leading-snug">{c.category}</h2>
-                </div>
-                <div className="md:col-span-9 grid sm:grid-cols-2 gap-x-10 gap-y-6">
-                  <div>
-                    <p className="eyebrow mb-2">{t("labels.situation")}</p>
-                    <p className="text-sm text-graphite leading-relaxed">
-                      {c.situation}
-                    </p>
+            {caseReviews.map((c) => {
+              const hasThumb = c.image && fileExists(c.image);
+              return (
+                <StaggerItem
+                  key={c.ref}
+                  as="article"
+                  className="grid md:grid-cols-12 gap-8 border-t border-steel-line pt-10"
+                >
+                  <div className="md:col-span-3">
+                    <h2 className="text-xl leading-snug">{c.category}</h2>
+                    {hasThumb && (
+                      <CertificateViewer
+                        src={c.image as string}
+                        alt={c.category}
+                        title={c.category}
+                      />
+                    )}
                   </div>
-                  <div>
-                    <p className="eyebrow mb-2">{t("labels.requirement")}</p>
-                    <p className="text-sm text-graphite leading-relaxed">
-                      {c.requirement}
-                    </p>
+                  <div className="md:col-span-9 grid sm:grid-cols-2 gap-x-10 gap-y-6">
+                    <div>
+                      <p className="eyebrow mb-2">{t("labels.situation")}</p>
+                      <p className="text-sm text-graphite leading-relaxed">
+                        {c.situation}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="eyebrow mb-2">{t("labels.requirement")}</p>
+                      <p className="text-sm text-graphite leading-relaxed">
+                        {c.requirement}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="eyebrow mb-2">{t("labels.role")}</p>
+                      <p className="text-sm text-graphite leading-relaxed">
+                        {c.role}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="eyebrow mb-2">{t("labels.outcome")}</p>
+                      <p className="text-sm text-graphite leading-relaxed">
+                        {c.outcome}
+                      </p>
+                    </div>
+                    <div className="sm:col-span-2 pt-2">
+                      <p className="text-xs text-graphite/70 italic">
+                        {t("importantNote")}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="eyebrow mb-2">{t("labels.role")}</p>
-                    <p className="text-sm text-graphite leading-relaxed">
-                      {c.role}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="eyebrow mb-2">{t("labels.outcome")}</p>
-                    <p className="text-sm text-graphite leading-relaxed">
-                      {c.outcome}
-                    </p>
-                  </div>
-                  <div className="sm:col-span-2 pt-2">
-                    <p className="text-xs text-graphite/70 italic">
-                      {t("importantNote")}
-                    </p>
-                  </div>
-                </div>
-              </StaggerItem>
-            ))}
+                </StaggerItem>
+              );
+            })}
           </Stagger>
         </div>
       </section>
