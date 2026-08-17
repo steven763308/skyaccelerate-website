@@ -66,7 +66,15 @@
       "Bash(curl -s -X POST http://localhost:3000/api/contact -H \"Content-Type: application/json\" -d '{}')",
       "Bash(curl -s -X POST http://localhost:3000/api/contact -H \"Content-Type: application/json\" -d '{\"fullName\":\"Test User\",\"phone\":\"0123456789\",\"email\":\"not-an-email\",\"service\":\"CIDB Renewal\"}')",
       "Bash(curl -s -X POST http://localhost:3000/api/contact -H \"Content-Type: application/json\" -d '{\"fullName\":\"Bot\",\"phone\":\"123\",\"email\":\"bot@example.com\",\"service\":\"Test\",\"website\":\"http://spam.example\"}')",
-      "Bash(curl -s -X POST http://localhost:3000/api/contact -H \"Content-Type: application/json\" -d '{\"fullName\":\"Jane Tan\",\"companyName\":\"Acme Sdn Bhd\",\"phone\":\"+6012-345 6789\",\"email\":\"jane@example.com\",\"service\":\"CIDB Renewal\",\"message\":\"Please advise on renewal timeline.\"}')"
+      "Bash(curl -s -X POST http://localhost:3000/api/contact -H \"Content-Type: application/json\" -d '{\"fullName\":\"Jane Tan\",\"companyName\":\"Acme Sdn Bhd\",\"phone\":\"+6012-345 6789\",\"email\":\"jane@example.com\",\"service\":\"CIDB Renewal\",\"message\":\"Please advise on renewal timeline.\"}')",
+      "Bash(echo \"exit: $?\")",
+      "Bash(npm view *)",
+      "Bash(node -e \"console.log\\(require\\('./node_modules/next/package.json'\\).version\\)\")",
+      "Bash(npm audit *)",
+      "Bash(rm -rf /d/ByteX/skyaccelerate-v2/.next)",
+      "Bash(tee /tmp/build-1435.log)",
+      "Bash(grep -i \"newsreader\" /tmp/build-1435.log || echo \"No Newsreader warning found — resolved.\")",
+      "Bash(grep -n -B2 -A2 \"Newsreader\" /tmp/build-1435.log)"
     ]
   }
 }
