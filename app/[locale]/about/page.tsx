@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHero, SectionHeading, Eyebrow, Chevron } from "@/components/Bits";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { getSiteConfig } from "@/lib/get-site-config";
+import { getSiteContent } from "@/lib/site-content";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -27,7 +27,7 @@ export default async function AboutPage({
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations("AboutPage");
-  const { coreValues, timeline, company } = getSiteConfig(locale as Locale);
+  const { coreValues, timeline, company } = await getSiteContent(locale as Locale);
 
   return (
     <>

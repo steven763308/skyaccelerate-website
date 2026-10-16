@@ -2,18 +2,16 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { getSiteConfig } from "@/lib/get-site-config";
+import { useSiteContent } from "@/components/SiteContentProvider";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import type { Locale } from "@/i18n/routing";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const locale = useLocale() as Locale;
   const t = useTranslations();
-  const { nav, company } = getSiteConfig(locale);
+  const { nav, company } = useSiteContent();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);

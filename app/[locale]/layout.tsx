@@ -7,8 +7,9 @@ import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { routing } from "@/i18n/routing";
-import { company } from "@/lib/site-config";
+import { routing, type Locale } from "@/i18n/routing";
+import { getSiteContent } from "@/lib/site-content";
+import { SiteContentProvider } from "@/components/SiteContentProvider";
 
 const serif = Newsreader({
   subsets: ["latin"],
@@ -57,6 +58,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
+  const { company } = await getSiteContent((hasLocale(routing.locales, locale) ? locale : routing.defaultLocale) as Locale);
 
   return {
     metadataBase: new URL(company.siteUrl),
@@ -111,6 +113,7 @@ export default async function RootLayout({
 
   // Enables static rendering for this locale.
   setRequestLocale(locale);
+  const { company, nav, serviceDropdownOptions } = await getSiteContent(locale);
 
   return (
     <html
@@ -119,10 +122,12 @@ export default async function RootLayout({
     >
       <body className="font-sans">
         <NextIntlClientProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-          <WhatsAppButton />
+          <SiteContentProvider content={{ company, nav, serviceDropdownOptions }}>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+            <WhatsAppButton />
+          </SiteContentProvider>
         </NextIntlClientProvider>
       </body>
     </html>

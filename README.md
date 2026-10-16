@@ -37,17 +37,28 @@ npm run build
 ```
 Then connect the `skyaccelerate.com` domain in the Vercel dashboard.
 
-## Editable content (single source of truth)
-All company details, contact info, navigation, services, case studies and
-insight placeholders live in `lib/site-config.ts`. Edit there — nothing is
-hard-coded across multiple pages.
+## Editable content (managed in SAG)
+Company info, services, case reviews, insights, core values, process steps,
+timeline and the contact-form service options are edited in SAG
+(admin.skyaccelerate.com → Marketing → Website Content) and published from
+there. `lib/site-content.ts` loads the published content and merges it over
+the built-in defaults in `lib/site-config.ts` / `lib/site-config.zh.ts`.
 
-Contact email is `enquiry@skyaccelerate.com`, set in this one file.
+- Pages are static and refresh hourly; publishing in SAG calls
+  `/api/revalidate`, so changes show up within seconds.
+- If SAG is unreachable the last cached copy keeps being served; with no
+  cached copy (or SAG not configured) the built-in config is used.
+- Navigation, legal links and the domain stay in `lib/site-config.ts`.
+
+## Contact form
+Submissions go to SAG (as CRM leads, source "Website") and, as a backup, by
+email to the enquiry address via Resend. The form succeeds if either works.
+
+## Environment variables
+See `.env.local.example`: `RESEND_API_KEY`, `RESEND_FROM_EMAIL`,
+`SAG_API_URL`, `WEBSITE_API_KEY` (must match SAG's backend).
 
 ## Next steps / not yet built
-- Contact form is currently front-end only (shows a confirmation state).
-  Wire `components/ContactForm.tsx` up to an API route, email service, or
-  CRM before going live.
 - If you get a version of the logo with a light/reversed wordmark, swap it
   into the footer (`components/Footer.tsx`) for a cleaner lockup than the
   mark-only crop currently used there.

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { getSiteConfig } from "@/lib/get-site-config";
+import { useSiteContent } from "@/components/SiteContentProvider";
 import type { Locale } from "@/i18n/routing";
 
 export default function ContactForm() {
@@ -11,7 +11,7 @@ export default function ContactForm() {
   const [error, setError] = useState<string | null>(null);
   const locale = useLocale() as Locale;
   const t = useTranslations("ContactForm");
-  const { company, serviceDropdownOptions } = getSiteConfig(locale);
+  const { company, serviceDropdownOptions } = useSiteContent();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

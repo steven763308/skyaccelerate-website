@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LegalLayout, LegalSection } from "@/components/Legal";
-import { company } from "@/lib/site-config";
+import { getSiteContent } from "@/lib/site-content";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -24,6 +24,7 @@ export default async function PrivacyPolicyPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const { company } = await getSiteContent(locale as Locale);
   const t = await getTranslations("PrivacyPolicyPage");
   const tCommon = await getTranslations("common");
 

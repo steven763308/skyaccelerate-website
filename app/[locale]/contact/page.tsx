@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHero, Eyebrow } from "@/components/Bits";
 import ContactForm from "@/components/ContactForm";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { company } from "@/lib/site-config";
+import { getSiteContent } from "@/lib/site-content";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -27,6 +27,7 @@ export default async function ContactPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const { company } = await getSiteContent(locale as Locale);
   const t = await getTranslations("ContactPage");
   const tCommon = await getTranslations("common");
 

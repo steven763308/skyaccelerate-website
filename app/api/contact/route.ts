@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { company } from "@/lib/site-config";
+import { getSiteContent } from "@/lib/site-content";
 
 // Runs on Node.js (not Edge) — required by the Resend SDK and for a
 // consistent runtime on Vercel.
@@ -206,7 +206,7 @@ async function sendEmail({ fullName, companyName, phone, email, service, message
 
   const { error } = await resend.emails.send({
     from: fromAddress,
-    to: company.contact.email,
+    to: (await getSiteContent("en")).company.contact.email,
     replyTo: email,
     subject: `New Website Enquiry — ${service}`,
     html,

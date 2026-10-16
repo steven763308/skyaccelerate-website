@@ -6,11 +6,14 @@ import { Link } from "@/i18n/navigation";
 import { PageHero } from "@/components/Bits";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { CertificateViewer } from "@/components/CertificateViewer";
-import { getSiteConfig } from "@/lib/get-site-config";
+import { getSiteContent } from "@/lib/site-content";
 import type { Locale } from "@/i18n/routing";
 
-function fileExists(publicSrc: string) {
-  return fs.existsSync(path.join(process.cwd(), "public", publicSrc));
+// Images uploaded from SAG are full https URLs; built-in ones are files
+// under /public, which may not have been added yet.
+function imageAvailable(src: string) {
+  if (/^https:\/\//.test(src)) return true;
+  return fs.existsSync(path.join(process.cwd(), "public", src));
 }
 
 export async function generateMetadata({
@@ -36,7 +39,7 @@ export default async function CaseReviewsPage({
   setRequestLocale(locale as Locale);
   const t = await getTranslations("CaseReviewsPage");
   const tCommon = await getTranslations("common");
-  const { caseReviews } = getSiteConfig(locale as Locale);
+  const { caseReviews } = await getSiteContent(locale as Locale);
 
   return (
     <>
@@ -56,7 +59,7 @@ export default async function CaseReviewsPage({
 
           <Stagger className="space-y-16">
             {caseReviews.map((c) => {
-              const hasThumb = c.image && fileExists(c.image);
+              const hasThumb = c.image && imageAvailable(c.image);
               return (
                 <StaggerItem
                   key={c.ref}

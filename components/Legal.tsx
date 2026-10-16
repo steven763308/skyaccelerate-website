@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
 import { Eyebrow } from "@/components/Bits";
 import { HeroIn, Reveal } from "@/components/motion";
-import { company } from "@/lib/site-config";
 
 export async function LegalLayout({
   eyebrow,
@@ -59,5 +58,3 @@ export function LegalSection({
     </Reveal>
   );
 }
-
-export const legalCompanyBlock = `${company.legalName} (${company.registrationNo})`;

@@ -1,8 +1,10 @@
-import { getTranslations } from "next-intl/server";
-import { company } from "@/lib/site-config";
+import { getLocale, getTranslations } from "next-intl/server";
+import { getSiteContent } from "@/lib/site-content";
+import type { Locale } from "@/i18n/routing";
 
 export default async function WhatsAppButton() {
   const t = await getTranslations("common");
+  const { company } = await getSiteContent((await getLocale()) as Locale);
 
   return (
     <a

@@ -7,6 +7,14 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     formats: ["image/avif", "image/webp"],
+    // Images uploaded from SAG (Supabase Storage, public "website-assets" bucket).
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/website-assets/**",
+      },
+    ],
   },
 };
 

@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageHero, SectionHeading, NoteBox, Chevron } from "@/components/Bits";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { getSiteConfig } from "@/lib/get-site-config";
+import { getSiteContent } from "@/lib/site-content";
 import type { Locale } from "@/i18n/routing";
 
 type Item = { title: string; body: string };
@@ -32,7 +32,7 @@ export default async function CidbAdvisoryPage({
   setRequestLocale(locale as Locale);
   const t = await getTranslations("CidbAdvisoryPage");
   const tCommon = await getTranslations("common");
-  const { processSteps } = getSiteConfig(locale as Locale);
+  const { processSteps } = await getSiteContent(locale as Locale);
 
   const contractorItems = t.raw("contractor.items") as Item[];
   const personnelItems = t.raw("personnel.items") as Item[];

@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { SectionHeading, Eyebrow, Chevron } from "@/components/Bits";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { HomeHero } from "@/components/HomeHero";
-import { getSiteConfig } from "@/lib/get-site-config";
+import { getSiteContent } from "@/lib/site-content";
 import type { Locale } from "@/i18n/routing";
 
 export default async function HomePage({
@@ -15,7 +15,7 @@ export default async function HomePage({
   setRequestLocale(locale as Locale);
   const t = await getTranslations();
   const { processSteps, differentiators, timeline, caseReviews, insightPlaceholders, company } =
-    getSiteConfig(locale as Locale);
+    await getSiteContent(locale as Locale);
 
   return (
     <>

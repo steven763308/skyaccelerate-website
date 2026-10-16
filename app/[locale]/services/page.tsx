@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageHero, SectionHeading, NoteBox, Chevron } from "@/components/Bits";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { getSiteConfig } from "@/lib/get-site-config";
+import { getSiteContent } from "@/lib/site-content";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -29,7 +29,7 @@ export default async function ServicesPage({
   setRequestLocale(locale as Locale);
   const t = await getTranslations();
   const tCommon = await getTranslations("common");
-  const { services } = getSiteConfig(locale as Locale);
+  const { services } = await getSiteContent(locale as Locale);
   const inHouse = services.filter((s) => s.category === "In-House Advisory");
   const partner = services.filter(
     (s) => s.category === "Partner-Supported Services"

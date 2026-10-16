@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { HeroIn } from "@/components/motion";
-import { company } from "@/lib/site-config";
+import { useSiteContent } from "@/components/SiteContentProvider";
 
 // Tiny blurred preview of hero-skyline.jpg, shown instantly while the full
 // photo streams in so the banner never pops in from blank.
@@ -19,6 +19,7 @@ const HERO_BLUR_DATA_URL =
 export function HomeHero() {
   const reduce = useReducedMotion();
   const t = useTranslations();
+  const { company } = useSiteContent();
 
   return (
     <section className="relative bg-navy-800 text-paper overflow-hidden">

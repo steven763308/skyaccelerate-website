@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getSiteConfig } from "@/lib/get-site-config";
+import { getSiteContent } from "@/lib/site-content";
 import type { Locale } from "@/i18n/routing";
 
 export default async function Footer() {
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations();
-  const { company, nav, footerLegalLinks } = getSiteConfig(locale);
+  const { company, nav, footerLegalLinks } = await getSiteContent(locale);
 
   return (
     <footer className="bg-navy-800 text-paper">
