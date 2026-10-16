@@ -275,7 +275,14 @@
     "upcoming": {
       "eyebrow": "Coming Soon",
       "title": "Upcoming Topics"
-    }
+    },
+    "articles": {
+      "eyebrow": "Articles",
+      "title": "Latest Insights"
+    },
+    "readArticle": "Read article",
+    "backToInsights": "All insights",
+    "discussWithUs": "Discuss your situation with us"
   },
   "ContactPage": {
     "hero": {
@@ -463,5 +470,44 @@
         ]
       }
     ]
+  },
+  "CareersPage": {
+    "metaTitle": "Careers",
+    "hero": {
+      "eyebrow": "Careers",
+      "title": "Grow With Us",
+      "subtitle": "We are building a team that values structure, integrity and long-term client relationships. Explore our current openings or send us a general application."
+    },
+    "openings": {
+      "eyebrow": "Open Positions",
+      "title": "Current Openings"
+    },
+    "noOpenings": "There are no open positions at the moment. You are welcome to send a general application and we will keep your details on file for future opportunities.",
+    "responsibilities": "Responsibilities",
+    "requirements": "Requirements",
+    "applyForThis": "Apply for this role",
+    "apply": {
+      "eyebrow": "Apply",
+      "title": "Submit Your Application"
+    }
+  },
+  "CareersForm": {
+    "fullName": "Full Name",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "position": "Position",
+    "selectPosition": "Select a position",
+    "generalApplication": "General application",
+    "resume": "Resume / CV",
+    "resumeHint": "PDF, Word, JPG or PNG, up to 4MB.",
+    "message": "Message",
+    "messagePlaceholder": "Anything you would like us to know — availability, notice period, expected salary.",
+    "consent": "I consent to {legalName} collecting, processing and retaining the personal data and documents I have provided for recruitment purposes, including consideration for future openings, in accordance with the Privacy Policy.",
+    "submit": "Submit Application",
+    "submitting": "Sending…",
+    "thankYouTitle": "Application Received",
+    "thankYouBody": "Thank you for your interest in joining us. Our team will review your application and contact you if your profile matches a suitable role.",
+    "genericError": "We were unable to submit your application. Please try again or email us directly.",
+    "fileTooLarge": "Your resume must be 4MB or smaller."
   }
 }

@@ -4,6 +4,7 @@ import { PageHero, Eyebrow } from "@/components/Bits";
 import ContactForm from "@/components/ContactForm";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { getSiteContent } from "@/lib/site-content";
+import { withSeo } from "@/lib/seo";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -13,11 +14,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "ContactPage" });
-  return {
+  return withSeo(locale, "contact", {
     title: t("hero.title"),
     description: t("hero.subtitle"),
     alternates: { canonical: "/contact" },
-  };
+  });
 }
 
 export default async function ContactPage({

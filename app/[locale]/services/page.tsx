@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { PageHero, SectionHeading, NoteBox, Chevron } from "@/components/Bits";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { getSiteContent } from "@/lib/site-content";
+import { withSeo } from "@/lib/seo";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -13,11 +14,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "ServicesPage" });
-  return {
+  return withSeo(locale, "services", {
     title: t("hero.title"),
     description: t("hero.subtitle"),
     alternates: { canonical: "/services" },
-  };
+  });
 }
 
 export default async function ServicesPage({

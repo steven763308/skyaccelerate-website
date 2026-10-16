@@ -275,7 +275,14 @@
     "upcoming": {
       "eyebrow": "即将推出",
       "title": "即将发布主题"
-    }
+    },
+    "articles": {
+      "eyebrow": "文章",
+      "title": "最新洞察"
+    },
+    "readArticle": "阅读全文",
+    "backToInsights": "全部洞察",
+    "discussWithUs": "与我们讨论您的情况"
   },
   "ContactPage": {
     "hero": {
@@ -463,5 +470,44 @@
         ]
       }
     ]
+  },
+  "CareersPage": {
+    "metaTitle": "加入我们",
+    "hero": {
+      "eyebrow": "加入我们",
+      "title": "与我们共同成长",
+      "subtitle": "我们正在建立一支重视结构化流程、诚信正直与长期客户关系的团队。欢迎查看目前的职位空缺，或提交一般求职申请。"
+    },
+    "openings": {
+      "eyebrow": "职位空缺",
+      "title": "目前招聘职位"
+    },
+    "noOpenings": "目前暂无职位空缺。欢迎提交一般求职申请，我们会保留您的资料，以便日后有合适职位时与您联系。",
+    "responsibilities": "工作职责",
+    "requirements": "任职要求",
+    "applyForThis": "申请此职位",
+    "apply": {
+      "eyebrow": "申请",
+      "title": "提交求职申请"
+    }
+  },
+  "CareersForm": {
+    "fullName": "姓名",
+    "email": "电子邮件",
+    "phoneNumber": "联系电话",
+    "position": "申请职位",
+    "selectPosition": "请选择职位",
+    "generalApplication": "一般求职申请",
+    "resume": "简历",
+    "resumeHint": "支持 PDF、Word、JPG 或 PNG，最大 4MB。",
+    "message": "留言",
+    "messagePlaceholder": "任何希望我们了解的信息——例如可到职时间、通知期、期望薪资。",
+    "consent": "本人同意 {legalName} 依据隐私政策，为招聘目的（包括日后职位的考虑）收集、处理及保留本人所提供的个人资料与文件。",
+    "submit": "提交申请",
+    "submitting": "提交中…",
+    "thankYouTitle": "已收到您的申请",
+    "thankYouBody": "感谢您有意加入我们。我们的团队将审阅您的申请，如有合适职位将与您联系。",
+    "genericError": "申请提交失败，请重试或直接通过电子邮件联系我们。",
+    "fileTooLarge": "简历文件不可超过 4MB。"
   }
 }

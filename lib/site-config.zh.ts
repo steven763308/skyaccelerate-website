@@ -17,6 +17,7 @@ export const nav = [
   { label: "CIDB 顾问", href: "/cidb-advisory" },
   { label: "案例回顾", href: "/case-reviews" },
   { label: "行业洞察", href: "/insights" },
+  { label: "加入我们", href: "/careers" },
   { label: "联系我们", href: "/contact" },
 ];
 

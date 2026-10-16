@@ -7,6 +7,7 @@ import { PageHero } from "@/components/Bits";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { CertificateViewer } from "@/components/CertificateViewer";
 import { getSiteContent } from "@/lib/site-content";
+import { withSeo } from "@/lib/seo";
 import type { Locale } from "@/i18n/routing";
 
 // Images uploaded from SAG are full https URLs; built-in ones are files
@@ -23,11 +24,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "CaseReviewsPage" });
-  return {
+  return withSeo(locale, "caseReviews", {
     title: t("hero.title"),
     description: t("hero.subtitle"),
     alternates: { canonical: "/case-reviews" },
-  };
+  });
 }
 
 export default async function CaseReviewsPage({

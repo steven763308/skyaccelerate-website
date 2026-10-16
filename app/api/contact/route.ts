@@ -1,50 +1,14 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { getSiteContent } from "@/lib/site-content";
+import { routing, type Locale } from "@/i18n/routing";
+import { escapeHtml, getClientIp, isRateLimited } from "@/lib/request-guards";
 
 // Runs on Node.js (not Edge) — required by the Resend SDK and for a
 // consistent runtime on Vercel.
 export const runtime = "nodejs";
 // Leaves headroom over SAG_TIMEOUT_MS below.
 export const maxDuration = 15;
-
-// --- Basic in-memory rate limiting ---------------------------------------
-// Best-effort spam throttle: caps submissions per IP within a rolling
-// window. Serverless functions on Vercel are ephemeral and can run as
-// multiple concurrent instances, so this state isn't shared globally —
-// it only protects within a single warm instance. That's sufficient to
-// blunt basic bots/retries; for guaranteed cross-instance limiting, back
-// this with Vercel KV / Upstash Redis instead.
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
-const RATE_LIMIT_MAX = 5; // max submissions per IP per window
-const submissionLog = new Map<string, number[]>();
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const recent = (submissionLog.get(ip) ?? []).filter(
-    (t) => now - t < RATE_LIMIT_WINDOW_MS
-  );
-  recent.push(now);
-  submissionLog.set(ip, recent);
-
-  // Opportunistically forget IPs with no recent activity so the map
-  // doesn't grow unbounded over the life of a warm instance.
-  if (submissionLog.size > 500) {
-    for (const [key, timestamps] of submissionLog) {
-      if (timestamps.every((t) => now - t >= RATE_LIMIT_WINDOW_MS)) {
-        submissionLog.delete(key);
-      }
-    }
-  }
-
-  return recent.length > RATE_LIMIT_MAX;
-}
-
-function getClientIp(req: Request): string {
-  const forwardedFor = req.headers.get("x-forwarded-for");
-  if (forwardedFor) return forwardedFor.split(",")[0].trim();
-  return req.headers.get("x-real-ip") || "unknown";
-}
 
 // --- Validation & sanitisation -------------------------------------------
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -57,12 +21,6 @@ const MAX_LENGTHS = {
   message: 5000,
 };
 
-function escapeHtml(value: string) {
-  return value.replace(
-    /[&<>"']/g,
-    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string)
-  );
-}
 
 const GENERIC_ERROR =
   "We were unable to submit your enquiry. Please try again or contact us directly.";
@@ -142,10 +100,40 @@ export async function POST(req: Request) {
     if (r.status === "rejected") console.error("Enquiry delivery failed:", r.reason);
   });
 
-  if (results.some((r) => r.status === "fulfilled")) {
-    return NextResponse.json({ ok: true });
+  if (!results.some((r) => r.status === "fulfilled")) {
+    return NextResponse.json({ error: GENERIC_ERROR }, { status: 502 });
   }
-  return NextResponse.json({ error: GENERIC_ERROR }, { status: 502 });
+
+  // Best-effort: the enquiry is already safe, so a failed auto-reply must
+  // not turn the visitor's submission into an error.
+  await sendAutoReply(fields, locale).catch((err) => console.error("Auto-reply failed:", err));
+  return NextResponse.json({ ok: true });
+}
+
+// Confirmation email to the client, worded in SAG (Website Content →
+// Enquiry Auto-Reply Email), in the language they used. Off unless enabled.
+async function sendAutoReply({ fullName, email, service }: EnquiryFields, locale: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+
+  const { autoReply, company } = await getSiteContent(isLocale(locale) ? locale : routing.defaultLocale);
+  if (!autoReply.enabled || !autoReply.subject || !autoReply.body) return;
+
+  const fill = (text: string) => text.replace(/\{name\}/g, fullName).replace(/\{service\}/g, service);
+  const paragraphs = fill(autoReply.body)
+    .split(/\n\s*\n/)
+    .map((p) => `<p style="margin:0 0 16px;font:400 15px/1.6 Arial,Helvetica,sans-serif;color:#12182A;">${escapeHtml(p.trim()).replace(/\n/g, "<br/>")}</p>`)
+    .join("");
+
+  const { error } = await new Resend(apiKey).emails.send({
+    from: process.env.RESEND_FROM_EMAIL || "Sky Accelerate Website <website@skyaccelerate.com>",
+    to: email,
+    replyTo: company.contact.email,
+    subject: fill(autoReply.subject).replace(/[\r\n]+/g, " "),
+    html: `<!doctype html><html><body style="margin:0;padding:24px 16px;background:#FAF8F4;"><div style="max-width:600px;margin:0 auto;">${paragraphs}</div></body></html>`,
+    text: fill(autoReply.body),
+  });
+  if (error) throw new Error(`Resend error: ${JSON.stringify(error)}`);
 }
 
 type EnquiryFields = {
@@ -156,6 +144,8 @@ type EnquiryFields = {
   service: string;
   message: string;
 };
+
+const isLocale = (value: string): value is Locale => (routing.locales as readonly string[]).includes(value);
 
 // Render can take a few seconds to wake an idle instance; past this we give
 // up and rely on the email copy rather than leave the visitor waiting.

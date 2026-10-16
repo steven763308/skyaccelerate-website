@@ -13,6 +13,7 @@ Next.js 14 (App Router) + TypeScript + Tailwind CSS. Built to be deployed on Ver
 
 ## Pages (V1 — all 10 complete)
 - Home (/)
+- Careers (/careers)
 - About (/about)
 - Services (/services)
 - CIDB Advisory (/cidb-advisory)
@@ -53,6 +54,19 @@ the built-in defaults in `lib/site-config.ts` / `lib/site-config.zh.ts`.
 ## Contact form
 Submissions go to SAG (as CRM leads, source "Website") and, as a backup, by
 email to the enquiry address via Resend. The form succeeds if either works.
+An optional auto-reply to the client (wording and on/off in SAG → Website
+Content → Enquiry Auto-Reply Email) is sent via Resend after a successful
+submission.
+
+## Also managed from SAG
+- **Announcement banner** — notice bar above the header, switched on/off in SAG.
+- **SEO** — per-page title/description overrides (`lib/seo.ts`).
+- **Insights articles** — an Insights item with a slug and body becomes a full
+  article at `/insights/<slug>` (`app/[locale]/insights/[slug]`).
+- **Careers** (`/careers`) — openings come from SAG; applications
+  (`/api/careers`, resume up to 4MB — Vercel's request-size limit) become
+  Talent Pool candidates in SAG. If SAG is unreachable the application is
+  emailed, resume attached, to the enquiry address instead.
 
 ## Environment variables
 See `.env.local.example`: `RESEND_API_KEY`, `RESEND_FROM_EMAIL`,

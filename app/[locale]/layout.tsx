@@ -10,6 +10,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { routing, type Locale } from "@/i18n/routing";
 import { getSiteContent } from "@/lib/site-content";
 import { SiteContentProvider } from "@/components/SiteContentProvider";
+import AnnouncementBanner from "@/components/AnnouncementBanner";
 
 const serif = Newsreader({
   subsets: ["latin"],
@@ -58,15 +59,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
-  const { company } = await getSiteContent((hasLocale(routing.locales, locale) ? locale : routing.defaultLocale) as Locale);
+  const { company, seo } = await getSiteContent((hasLocale(routing.locales, locale) ? locale : routing.defaultLocale) as Locale);
+
+  // Home page title/description can be overridden in SAG (Website Content → SEO).
+  const defaultTitle = seo.home?.title ?? t("defaultTitle");
+  const defaultDescription = seo.home?.description ?? t("defaultDescription");
 
   return {
     metadataBase: new URL(company.siteUrl),
     title: {
-      default: t("defaultTitle"),
+      default: defaultTitle,
       template: `%s | ${company.shortName}`,
     },
-    description: t("defaultDescription"),
+    description: defaultDescription,
     keywords: [
       "CIDB Consultant Malaysia",
       "CIDB Registration Malaysia",
@@ -77,8 +82,8 @@ export async function generateMetadata({
       "Contractor Compliance Advisory",
     ],
     openGraph: {
-      title: t("defaultTitle"),
-      description: t("defaultDescription"),
+      title: defaultTitle,
+      description: defaultDescription,
       url: company.siteUrl,
       siteName: company.shortName,
       locale: locale === "zh" ? "zh_CN" : "en_MY",
@@ -86,8 +91,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: t("defaultTitle"),
-      description: t("defaultDescription"),
+      title: defaultTitle,
+      description: defaultDescription,
     },
     alternates: {
       canonical: locale === "en" ? "/" : `/${locale}`,
@@ -113,7 +118,7 @@ export default async function RootLayout({
 
   // Enables static rendering for this locale.
   setRequestLocale(locale);
-  const { company, nav, serviceDropdownOptions } = await getSiteContent(locale);
+  const { company, nav, serviceDropdownOptions, announcement } = await getSiteContent(locale);
 
   return (
     <html
@@ -123,6 +128,7 @@ export default async function RootLayout({
       <body className="font-sans">
         <NextIntlClientProvider>
           <SiteContentProvider content={{ company, nav, serviceDropdownOptions }}>
+            <AnnouncementBanner announcement={announcement} />
             <Header />
             <main>{children}</main>
             <Footer />

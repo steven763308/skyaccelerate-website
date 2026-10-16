@@ -34,6 +34,7 @@ export const nav = [
   { label: "CIDB Advisory", href: "/cidb-advisory" },
   { label: "Case Reviews", href: "/case-reviews" },
   { label: "Insights", href: "/insights" },
+  { label: "Careers", href: "/careers" },
   { label: "Contact", href: "/contact" },
 ];
 

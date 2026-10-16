@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { SectionHeading, Eyebrow, Chevron } from "@/components/Bits";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { HomeHero } from "@/components/HomeHero";
-import { getSiteContent } from "@/lib/site-content";
+import { getSiteContent, isPublishedArticle } from "@/lib/site-content";
 import type { Locale } from "@/i18n/routing";
 
 export default async function HomePage({
@@ -201,15 +201,26 @@ export default async function HomePage({
             </Link>
           </div>
           <Stagger className="grid md:grid-cols-3 gap-8">
-            {insightPlaceholders.slice(0, 3).map((a) => (
-              <StaggerItem key={a.ref} className="border-t border-steel-line pt-5">
-                <p className="text-xs text-graphite mb-3">{a.category}</p>
-                <h3 className="text-base leading-snug">{a.title}</h3>
-                <span className="inline-block mt-4 text-xs text-steel">
-                  {a.status}
-                </span>
-              </StaggerItem>
-            ))}
+            {/* Published articles first, then upcoming topics. */}
+            {[...insightPlaceholders.filter(isPublishedArticle), ...insightPlaceholders.filter((a) => !isPublishedArticle(a))]
+              .slice(0, 3)
+              .map((a, i) => (
+                <StaggerItem key={a.slug || a.ref || i} className="border-t border-steel-line pt-5">
+                  <p className="text-xs text-graphite mb-3">{a.category}</p>
+                  <h3 className="text-base leading-snug">
+                    {isPublishedArticle(a) ? (
+                      <Link href={`/insights/${a.slug}`} className="hover:underline underline-offset-4">
+                        {a.title}
+                      </Link>
+                    ) : (
+                      a.title
+                    )}
+                  </h3>
+                  {!isPublishedArticle(a) && a.status && (
+                    <span className="inline-block mt-4 text-xs text-steel">{a.status}</span>
+                  )}
+                </StaggerItem>
+              ))}
           </Stagger>
         </div>
       </section>

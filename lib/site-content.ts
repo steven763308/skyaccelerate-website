@@ -22,7 +22,46 @@ const FETCH_TIMEOUT_MS = 10_000;
 
 type StaticConfig = ReturnType<typeof getSiteConfig>;
 
-export type SiteContent = { -readonly [K in keyof StaticConfig]: StaticConfig[K] };
+// Sections that only exist in SAG (no built-in equivalent).
+export type InsightItem = {
+  ref: string;
+  category: string;
+  title: string;
+  status?: string;
+  slug?: string;
+  date?: string;
+  summary?: string;
+  body?: string;
+};
+
+export type JobOpening = {
+  slug: string;
+  title: string;
+  location?: string;
+  employmentType?: string;
+  summary: string;
+  responsibilities?: string[];
+  requirements?: string[];
+};
+
+export type Announcement = { enabled: boolean; message?: string; linkLabel?: string; linkHref?: string };
+
+export type SeoPageKey = "home" | "about" | "services" | "cidbAdvisory" | "caseReviews" | "insights" | "careers" | "contact";
+export type SeoOverrides = Partial<Record<SeoPageKey, { title?: string; description?: string }>>;
+
+export type AutoReply = { enabled: boolean; subject?: string; body?: string };
+
+export type SiteContent = Omit<{ -readonly [K in keyof StaticConfig]: StaticConfig[K] }, "insightPlaceholders"> & {
+  insightPlaceholders: InsightItem[];
+  careers: JobOpening[];
+  announcement: Announcement;
+  seo: SeoOverrides;
+  autoReply: AutoReply;
+};
+
+// An insight with a slug and body is a full article at /insights/<slug>.
+export const isPublishedArticle = (item: InsightItem): item is InsightItem & { slug: string; body: string } =>
+  Boolean(item.slug && item.body);
 
 type PublishedSections = Record<string, unknown>;
 
@@ -38,6 +77,7 @@ const LIST_SECTIONS: Record<string, string[]> = {
   differentiators: ["title", "body"],
   processSteps: ["title", "body"],
   timeline: ["year", "title", "body"],
+  careers: ["slug", "title", "summary"],
 };
 
 const validList = (value: unknown, required: string[]) =>
@@ -73,9 +113,20 @@ async function fetchPublished(locale: Locale): Promise<PublishedSections | null>
   }
 }
 
+const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+const stringField = (source: Record<string, unknown>, key: string) =>
+  isString(source[key]) && source[key] ? (source[key] as string) : undefined;
+
 export function mergeSiteContent(base: StaticConfig, published: PublishedSections | null): SiteContent {
-  if (!published) return base;
-  const merged: SiteContent = { ...base };
+  const merged: SiteContent = {
+    ...base,
+    careers: [],
+    announcement: { enabled: false },
+    seo: {},
+    autoReply: { enabled: false },
+  };
+  if (!published) return merged;
 
   const company = published.company;
   if (isObject(company)) {
@@ -102,6 +153,40 @@ export function mergeSiteContent(base: StaticConfig, published: PublishedSection
     } else if (value !== undefined) {
       console.error(`Ignoring malformed "${key}" from SAG; using built-in content.`);
     }
+  }
+
+  // Careers & insights slugs become URLs — drop anything not URL-safe.
+  merged.careers = merged.careers.filter((job) => SLUG.test(job.slug));
+  merged.insightPlaceholders = merged.insightPlaceholders.map((item) =>
+    item.slug && !SLUG.test(item.slug) ? { ...item, slug: undefined } : item
+  );
+
+  const announcement = published.announcement;
+  if (isObject(announcement)) {
+    const message = stringField(announcement, "message");
+    const linkHref = stringField(announcement, "linkHref");
+    merged.announcement = {
+      enabled: announcement.enabled === true && Boolean(message),
+      message,
+      linkLabel: stringField(announcement, "linkLabel"),
+      // Same rule SAG enforces: a site path or an https URL, nothing else.
+      linkHref: linkHref && /^(\/[^\s]*|https:\/\/[^\s"'<>]+)$/.test(linkHref) ? linkHref : undefined,
+    };
+  }
+
+  const seo = published.seo;
+  if (isObject(seo)) {
+    for (const [page, value] of Object.entries(seo)) {
+      if (!isObject(value)) continue;
+      merged.seo[page as SeoPageKey] = { title: stringField(value, "title"), description: stringField(value, "description") };
+    }
+  }
+
+  const autoReply = published.autoReply;
+  if (isObject(autoReply)) {
+    const subject = stringField(autoReply, "subject");
+    const body = stringField(autoReply, "body");
+    merged.autoReply = { enabled: autoReply.enabled === true && Boolean(subject && body), subject, body };
   }
 
   const options = published.serviceDropdownOptions;
