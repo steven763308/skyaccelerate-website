@@ -124,8 +124,8 @@ export default async function CidbAdvisoryPage({
         <div className="container-content">
           <SectionHeading eyebrow={t("process.eyebrow")} title={t("process.title")} light />
           <Stagger className="grid md:grid-cols-5 gap-8">
-            {processSteps.map((step) => (
-              <StaggerItem key={step.ref}>
+            {processSteps.map((step, idx) => (
+              <StaggerItem key={`${step.ref}-${idx}`}>
                 <span className="font-serif text-4xl text-paper/25">
                   {step.ref}
                 </span>

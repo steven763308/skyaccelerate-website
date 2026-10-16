@@ -59,11 +59,11 @@ export default async function CaseReviewsPage({
           </Reveal>
 
           <Stagger className="space-y-16">
-            {caseReviews.map((c) => {
+            {caseReviews.map((c, idx) => {
               const hasThumb = c.image && imageAvailable(c.image);
               return (
                 <StaggerItem
-                  key={c.ref}
+                  key={`${c.ref}-${idx}`}
                   as="article"
                   className="grid md:grid-cols-12 gap-8 border-t border-steel-line pt-10"
                 >

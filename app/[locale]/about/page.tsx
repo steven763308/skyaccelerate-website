@@ -61,8 +61,8 @@ export default async function AboutPage({
             subtitle={t("story.subtitle")}
           />
           <Stagger className="grid md:grid-cols-3 gap-10">
-            {timeline.map((tl) => (
-              <StaggerItem key={tl.year} className="relative pl-6 border-l border-steel-line">
+            {timeline.map((tl, idx) => (
+              <StaggerItem key={`${tl.year}-${idx}`} className="relative pl-6 border-l border-steel-line">
                 <span className="font-serif text-sm text-graphite">
                   {tl.year}
                 </span>
@@ -107,8 +107,8 @@ export default async function AboutPage({
           <Stagger className="grid md:grid-cols-3 gap-x-10 gap-y-10">
             {coreValues.map((v, i) => (
               <StaggerItem
-                key={v.ref}
-                className={`pt-6 ${i > 0 ? "md:border-l md:border-paper/10 md:pl-10" : ""}`}
+                key={`${v.ref}-${i}`}
+                className={`pt-6 ${i % 3 !== 0 ? "md:border-l md:border-paper/10 md:pl-10" : ""}`}
               >
                 <h3 className="text-xl mb-3">{v.title}</h3>
                 <p className="text-sm text-steel leading-relaxed">{v.body}</p>

@@ -85,7 +85,7 @@ export default async function HomePage({
           />
           <Stagger className="grid md:grid-cols-5 gap-8">
             {processSteps.map((step, i) => (
-              <StaggerItem key={step.ref} className="relative">
+              <StaggerItem key={`${step.ref}-${i}`} className="relative">
                 <span className="font-serif text-4xl text-steel/50">
                   {step.ref}
                 </span>
@@ -113,7 +113,7 @@ export default async function HomePage({
           <Stagger className="grid md:grid-cols-2 gap-x-14">
             {differentiators.map((d, i) => (
               <StaggerItem
-                key={d.ref}
+                key={`${d.ref}-${i}`}
                 className={`flex gap-5 py-8 ${
                   i >= 2 ? "border-t border-paper/10" : ""
                 }`}
@@ -139,8 +139,8 @@ export default async function HomePage({
             title={t("HomePage.history.title")}
           />
           <Stagger className="grid md:grid-cols-3 gap-10">
-            {timeline.map((tl) => (
-              <StaggerItem key={tl.year} className="relative pl-6 border-l border-steel-line">
+            {timeline.map((tl, idx) => (
+              <StaggerItem key={`${tl.year}-${idx}`} className="relative pl-6 border-l border-steel-line">
                 <span className="font-serif text-sm text-graphite">
                   {tl.year}
                 </span>
@@ -170,8 +170,8 @@ export default async function HomePage({
             </Link>
           </div>
           <Stagger className="grid md:grid-cols-2 gap-10">
-            {caseReviews.slice(0, 2).map((c) => (
-              <StaggerItem key={c.ref} className="border-t border-steel-line pt-6">
+            {caseReviews.slice(0, 2).map((c, idx) => (
+              <StaggerItem key={`${c.ref}-${idx}`} className="border-t border-steel-line pt-6">
                 <h3 className="text-lg mb-3">{c.category}</h3>
                 <p className="text-sm text-graphite leading-relaxed mb-4">
                   {c.situation}
