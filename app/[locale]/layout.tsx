@@ -11,6 +11,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { getSiteContent } from "@/lib/site-content";
 import { SiteContentProvider } from "@/components/SiteContentProvider";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
+import Analytics from "@/components/Analytics";
 
 const serif = Newsreader({
   subsets: ["latin"],
@@ -133,6 +134,7 @@ export default async function RootLayout({
             <main>{children}</main>
             <Footer />
             <WhatsAppButton />
+            <Analytics />
           </SiteContentProvider>
         </NextIntlClientProvider>
       </body>
