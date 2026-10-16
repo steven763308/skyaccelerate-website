@@ -19,7 +19,11 @@ export default function ContactForm() {
     setSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    const payload = Object.fromEntries(formData.entries());
+    const payload = {
+      ...Object.fromEntries(formData.entries()),
+      locale,
+      pageUrl: window.location.href,
+    };
 
     try {
       const res = await fetch("/api/contact", {

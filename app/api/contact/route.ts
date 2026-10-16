@@ -5,6 +5,8 @@ import { company } from "@/lib/site-config";
 // Runs on Node.js (not Edge) — required by the Resend SDK and for a
 // consistent runtime on Vercel.
 export const runtime = "nodejs";
+// Leaves headroom over SAG_TIMEOUT_MS below.
+export const maxDuration = 15;
 
 // --- Basic in-memory rate limiting ---------------------------------------
 // Best-effort spam throttle: caps submissions per IP within a rolling
@@ -106,12 +108,81 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Please provide a valid email address." }, { status: 400 });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.error("RESEND_API_KEY is not configured.");
+  const locale = String(body.locale ?? "").trim().slice(0, 10);
+  const pageUrl = String(body.pageUrl ?? "").trim().slice(0, 500);
+
+  // Two independent deliveries, run in parallel: into SAG (where it becomes
+  // a CRM lead) and an email to the enquiry inbox. The submission succeeds if
+  // either lands, so an outage on one side never loses a client's enquiry.
+  const sagConfigured = Boolean(process.env.SAG_API_URL && process.env.WEBSITE_API_KEY);
+  const emailConfigured = Boolean(process.env.RESEND_API_KEY);
+
+  if (!sagConfigured && !emailConfigured) {
+    console.error("Neither SAG (SAG_API_URL / WEBSITE_API_KEY) nor RESEND_API_KEY is configured.");
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 500 });
   }
 
+  const fields = { fullName, companyName, phone, email, service, message };
+  const deliveries: Promise<void>[] = [];
+  if (sagConfigured) {
+    deliveries.push(
+      sendToSag({
+        ...fields,
+        locale,
+        pageUrl,
+        clientIp: ip,
+        userAgent: req.headers.get("user-agent") ?? "",
+      })
+    );
+  }
+  if (emailConfigured) deliveries.push(sendEmail(fields));
+
+  const results = await Promise.allSettled(deliveries);
+  results.forEach((r) => {
+    if (r.status === "rejected") console.error("Enquiry delivery failed:", r.reason);
+  });
+
+  if (results.some((r) => r.status === "fulfilled")) {
+    return NextResponse.json({ ok: true });
+  }
+  return NextResponse.json({ error: GENERIC_ERROR }, { status: 502 });
+}
+
+type EnquiryFields = {
+  fullName: string;
+  companyName: string;
+  phone: string;
+  email: string;
+  service: string;
+  message: string;
+};
+
+// Render can take a few seconds to wake an idle instance; past this we give
+// up and rely on the email copy rather than leave the visitor waiting.
+const SAG_TIMEOUT_MS = 8000;
+
+async function sendToSag(
+  payload: EnquiryFields & { locale: string; pageUrl: string; clientIp: string; userAgent: string }
+) {
+  const baseUrl = process.env.SAG_API_URL!.replace(/\/+$/, "");
+  const res = await fetch(`${baseUrl}/api/public/website/enquiries`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Website-Key": process.env.WEBSITE_API_KEY!,
+    },
+    body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(SAG_TIMEOUT_MS),
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`SAG responded ${res.status}: ${text.slice(0, 300)}`);
+  }
+}
+
+async function sendEmail({ fullName, companyName, phone, email, service, message }: EnquiryFields) {
   const submittedAt = new Date();
   const timestamp = new Intl.DateTimeFormat("en-MY", {
     dateStyle: "long",
@@ -119,7 +190,7 @@ export async function POST(req: Request) {
     timeZone: "Asia/Kuala_Lumpur",
   }).format(submittedAt);
 
-  const resend = new Resend(apiKey);
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const fromAddress =
     process.env.RESEND_FROM_EMAIL || "Sky Accelerate Website <website@skyaccelerate.com>";
 
@@ -133,25 +204,15 @@ export async function POST(req: Request) {
     timestamp,
   });
 
-  try {
-    const { error } = await resend.emails.send({
-      from: fromAddress,
-      to: company.contact.email,
-      replyTo: email,
-      subject: `New Website Enquiry — ${service}`,
-      html,
-    });
+  const { error } = await resend.emails.send({
+    from: fromAddress,
+    to: company.contact.email,
+    replyTo: email,
+    subject: `New Website Enquiry — ${service}`,
+    html,
+  });
 
-    if (error) {
-      console.error("Resend error:", error);
-      return NextResponse.json({ error: GENERIC_ERROR }, { status: 502 });
-    }
-
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error("Contact form send failed:", err);
-    return NextResponse.json({ error: GENERIC_ERROR }, { status: 500 });
-  }
+  if (error) throw new Error(`Resend error: ${JSON.stringify(error)}`);
 }
 
 function renderEnquiryEmail(fields: {
