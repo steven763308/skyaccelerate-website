@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getSiteContent } from "@/lib/site-content";
+import { flattenNav } from "@/lib/site-config";
 import type { Locale } from "@/i18n/routing";
 
 export default async function Footer() {
@@ -39,7 +40,8 @@ export default async function Footer() {
           <div className="md:col-span-3">
             <p className="eyebrow-light mb-4">{t("footer.companyHeading")}</p>
             <ul className="space-y-3">
-              {nav.slice(1).map((item) => (
+              {/* Every page, flattened out of the header's dropdown groups (minus Home). */}
+              {flattenNav(nav).slice(1).map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}

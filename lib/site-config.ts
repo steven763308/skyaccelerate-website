@@ -27,16 +27,41 @@ export const company = {
   siteUrl: "https://skyaccelerate.com",
 };
 
-export const nav = [
+export type NavLink = { label: string; href: string };
+// A top-level menu entry; `children` show as a dropdown in the header
+// (the parent itself still links to its own page).
+export type NavItem = NavLink & { children?: NavLink[] };
+
+export const nav: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "CIDB Advisory", href: "/cidb-advisory" },
-  { label: "Case Reviews", href: "/case-reviews" },
+  {
+    label: "About",
+    href: "/about",
+    children: [
+      { label: "About Us", href: "/about" },
+      { label: "Case Reviews", href: "/case-reviews" },
+      { label: "Careers", href: "/careers" },
+    ],
+  },
+  {
+    label: "Services",
+    href: "/services",
+    children: [
+      { label: "All Services", href: "/services" },
+      { label: "CIDB Advisory", href: "/cidb-advisory" },
+    ],
+  },
   { label: "Insights", href: "/insights" },
-  { label: "Careers", href: "/careers" },
   { label: "Contact", href: "/contact" },
 ];
+
+// Every page in the menu once, in menu order (for the footer).
+export const flattenNav = (items: NavItem[]): NavLink[] => {
+  const seen = new Set<string>();
+  return items
+    .flatMap((item) => (item.children?.length ? item.children : [item]))
+    .filter((link) => (seen.has(link.href) ? false : (seen.add(link.href), true)));
+};
 
 export const footerLegalLinks = [
   { label: "Privacy Policy", href: "/privacy-policy" },

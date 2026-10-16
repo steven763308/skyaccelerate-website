@@ -6,18 +6,30 @@
 // identical to English so both locales share the same routing/logic.
 // ---------------------------------------------------------------------------
 
-import { company } from "./site-config";
+import { company, type NavItem } from "./site-config";
 
 export { company };
 
-export const nav = [
+export const nav: NavItem[] = [
   { label: "首页", href: "/" },
-  { label: "关于我们", href: "/about" },
-  { label: "服务项目", href: "/services" },
-  { label: "CIDB 顾问", href: "/cidb-advisory" },
-  { label: "案例回顾", href: "/case-reviews" },
+  {
+    label: "关于我们",
+    href: "/about",
+    children: [
+      { label: "公司简介", href: "/about" },
+      { label: "案例回顾", href: "/case-reviews" },
+      { label: "加入我们", href: "/careers" },
+    ],
+  },
+  {
+    label: "服务项目",
+    href: "/services",
+    children: [
+      { label: "全部服务", href: "/services" },
+      { label: "CIDB 顾问", href: "/cidb-advisory" },
+    ],
+  },
   { label: "行业洞察", href: "/insights" },
-  { label: "加入我们", href: "/careers" },
   { label: "联系我们", href: "/contact" },
 ];
 

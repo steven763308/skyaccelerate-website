@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import type { NavItem } from "@/lib/site-config";
 import { useSiteContent } from "@/components/SiteContentProvider";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
@@ -12,6 +13,11 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const t = useTranslations();
   const { nav, company } = useSiteContent();
+  const pathname = usePathname();
+  const isActive = (item: NavItem) =>
+    item.href === "/"
+      ? pathname === "/"
+      : [item, ...(item.children ?? [])].some((l) => pathname === l.href || pathname.startsWith(`${l.href}/`));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -46,16 +52,54 @@ export default function Header() {
           />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-6 xl:gap-9">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-[13px] tracking-wide text-ink/75 hover:text-ink transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
+        <nav className="hidden lg:flex items-center gap-8 xl:gap-10">
+          {nav.map((item) => {
+            const linkClass = `inline-flex items-center gap-1.5 text-[13px] tracking-wide transition-colors ${
+              isActive(item) ? "text-ink" : "text-ink/75 hover:text-ink"
+            }`;
+            if (!item.children?.length) {
+              return (
+                <Link key={item.href} href={item.href} className={linkClass}>
+                  {item.label}
+                </Link>
+              );
+            }
+            // Opens on hover and on keyboard focus (focus-within); the
+            // parent label still links to its own page.
+            return (
+              <div key={item.href} className="relative group">
+                <Link href={item.href} aria-haspopup="true" className={`${linkClass} py-3`}>
+                  {item.label}
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 10 6"
+                    className="h-1.5 w-2.5 transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180"
+                  >
+                    <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.3" />
+                  </svg>
+                </Link>
+                <div className="invisible absolute left-1/2 top-full -translate-x-1/2 translate-y-1 pt-2 opacity-0 transition duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                  <ul className="min-w-[210px] border border-steel-line bg-paper py-2 shadow-[0_12px_32px_rgba(14,23,41,0.10)]">
+                    {item.children.map((child) => {
+                      const active = pathname === child.href;
+                      return (
+                        <li key={child.href}>
+                          <Link
+                            href={child.href}
+                            className={`block px-5 py-2.5 text-[13px] tracking-wide transition-colors hover:bg-paper-dim ${
+                              active ? "text-ink" : "text-ink/75 hover:text-ink"
+                            }`}
+                          >
+                            {child.label}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
+            );
+          })}
         </nav>
 
         <div className="hidden lg:flex items-center gap-6">
@@ -87,16 +131,34 @@ export default function Header() {
       {open && (
         <div className="lg:hidden border-t border-steel-line bg-paper">
           <div className="container-content py-6 flex flex-col gap-5">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="text-sm tracking-wide text-ink"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {nav.map((item) =>
+              item.children?.length ? (
+                <div key={item.href}>
+                  <p className="text-sm tracking-wide text-ink">{item.label}</p>
+                  <div className="mt-3 ml-1 flex flex-col gap-3 border-l border-steel-line pl-4">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        onClick={() => setOpen(false)}
+                        className="text-sm tracking-wide text-ink/75"
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="text-sm tracking-wide text-ink"
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
             <div className="pt-1">
               <LanguageSwitcher />
             </div>
